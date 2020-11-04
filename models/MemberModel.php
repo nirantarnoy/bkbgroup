@@ -28,6 +28,7 @@ function getMemberDatamodel($connect, $id){
                 'bank_id'=>$row['bank_id'],
                 'bank_account'=>$row['bank_account'],
                 'id_number'=>$row['id_number'],
+                'active_date'=>$row['active_date'],
 
             ]);
         }

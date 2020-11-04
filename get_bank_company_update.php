@@ -8,7 +8,7 @@ if (isset($_POST['id'])) {
 }
 
 if ($id) {
-    $query = "SELECT * FROM position_user WHERE id='$id' ";
+    $query = "SELECT * FROM bank_account_company WHERE id='$id' ";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
@@ -21,23 +21,7 @@ if ($id) {
 //           ,'is_tool'=>$row['is_tool'],'is_user'=>$row['is_user'],'is_all'=>$row['is_all']]);
 //    }
     foreach ($result as $row) {
-        array_push($data,[
-            'id'=>$row['id'],
-            'name'=>$row['name'],
-            'description'=>$row['description'],
-            'is_member'=>$row['is_member'],
-            'is_member'=>$row['is_member'],
-            'is_accounting'=>$row['is_accounting'],
-            'is_promotion'=>$row['is_promotion'],
-            'is_capital'=>$row['is_capital'],
-            'is_bank'=>$row['is_bank'],
-            'is_user'=>$row['is_user'],
-            'is_position'=>$row['is_position'],
-            'is_company_account'=>$row['is_company_account'],
-            'is_statistics' => $row['is_statistics'],
-            'is_all'=>$row['is_all'],
-
-        ]);
+        array_push($data,['id'=>$row['id'],'account_name'=>$row['name'],'bank_account'=>$row['bank_account'],'bank_id'=>$row['bank_id'],'balance'=>number_format($row['balance'])]);
     }
 
     echo json_encode($data);

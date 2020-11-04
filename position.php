@@ -125,6 +125,13 @@ if(isset($_SESSION['msg-error'])){
                                         <label class="custom-control-label" for="is_capital">Capital</label>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox small">
+                                        <input type="checkbox" name="is_company_account" class="custom-control-input" id="is_company_account"
+                                               onchange="checkboxChange($(this))">
+                                        <label class="custom-control-label" for="is_company_account">Bank Account</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -148,6 +155,13 @@ if(isset($_SESSION['msg-error'])){
                                         <input type="checkbox" name="is_position" class="custom-control-input"
                                                id="is_position" onchange="checkboxChange($(this))">
                                         <label class="custom-control-label" for="is_position">User</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox small">
+                                        <input type="checkbox" name="is_statistics" class="custom-control-input"
+                                               id="is_statistics" onchange="checkboxChange($(this))">
+                                        <label class="custom-control-label" for="is_statistics">Statistics</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -254,7 +268,10 @@ include "footer.php";
             var is_bank = 0;
             var is_user = 0;
             var is_position = 0;
+            var is_bank_account = 0;
+            var is_statistics = 0;
             var is_all = 0;
+
 
             $.ajax({
                 'type': 'post',
@@ -274,7 +291,9 @@ include "footer.php";
                         is_bank = data[0]['is_bank'];
                         is_user = data[0]['is_user'];
                         is_position = data[0]['is_position'];
+                        is_bank_account = data[0]['is_company_account'];
                         is_all = data[0]['is_all'];
+                        is_statistics = data[0]['is_statistics'];
                     }
                 },
                 'error': function(err){
@@ -306,6 +325,12 @@ include "footer.php";
             }
             if (is_position == 1) {
                 $("#is_position").prop("checked", "checked");
+            }
+            if (is_bank_account == 1) {
+                $("#is_company_account").prop("checked", "checked");
+            }
+            if (is_statistics == 1) {
+                $("#is_statistics").prop("checked", "checked");
             }
             if (is_all == 1) {
                 $("#is_all").prop("checked", "checked");

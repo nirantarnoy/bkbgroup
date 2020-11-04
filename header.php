@@ -18,12 +18,6 @@ $displayname = '';
 if (isset($_SESSION['userid'])) {
     $user = $_SESSION['userid'];
 }
-if (isset($_SESSION['branch'])) {
-    $branch = $_SESSION['branch'];
-}
-if (isset($_SESSION['viewmode'])) {
-    $viewmode = $_SESSION['viewmode'];
-}
 
 if ($user) {
     $displayname = getDisplayname($user, $connect);
@@ -205,12 +199,26 @@ if ($user) {
         <!--        </li>-->
 
         <!-- Nav Item - Charts -->
-        <?php if (checkPer($user_position,"is_member", $connect)): ?>
+        <?php if (checkPer($user_position,"is_company_account", $connect)): ?>
         <li class="nav-item">
-            <a class="nav-link" href="member.php">
-                <i class="fas fa-fw fa-user" style="font-size: 18px;"></i>
-                <span class="menu-text" style="font-size: 20px;">Members</span></a>
+            <a class="nav-link" href="bank_company.php">
+                <i class="fas fa-fw fa-list-alt" style="font-size: 18px;"></i>
+                <span class="menu-text" style="font-size: 20px;">My Bank</span></a>
         </li>
+        <?php endif;?>
+        <?php if (checkPer($user_position,"is_statistics", $connect)): ?>
+            <li class="nav-item">
+                <a class="nav-link" href="statistics.php">
+                    <i class="fas fa-fw fa-chart-line" style="font-size: 18px;"></i>
+                    <span class="menu-text" style="font-size: 20px;">Statistics</span></a>
+            </li>
+        <?php endif;?>
+        <?php if (checkPer($user_position,"is_member", $connect)): ?>
+            <li class="nav-item">
+                <a class="nav-link" href="member.php">
+                    <i class="fas fa-fw fa-user" style="font-size: 18px;"></i>
+                    <span class="menu-text" style="font-size: 20px;">Members</span></a>
+            </li>
         <?php endif;?>
         <?php if (checkPer($user_position,"is_accounting", $connect)): ?>
         <li class="nav-item">

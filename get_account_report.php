@@ -47,6 +47,7 @@ if ($promotion_id > 0) {
         $member_data = getMemberDatamodel($connect,$row['member_id']);
 
         $html.='<tr>';
+        $html.='<td>'.date('Y-m-d H:i:s',strtotime($member_data[0]['active_date'])).'</td>';
         $html.='<td>'.getMemberaccount($connect,$row['member_id']).'</td>';
         $html.='<td>'.getMembername($connect,$row['member_id']).'</td>';
         $html.='<td>'.$member_data[0]['phone'].'</td>';
@@ -59,7 +60,7 @@ if ($promotion_id > 0) {
         $html.='</tr>';
     }
     $html.='<tr>';
-    $html.='<td colspan="6" style="text-align: right"><b>Total</b></td>';
+    $html.='<td colspan="7" style="text-align: right"><b>Total</b></td>';
     $html.='<td style="text-align: right"><b>'.number_format($in_total).'</b></td>';
     $html.='<td style="text-align: right"><b>'.number_format($out_total).'</b></td>';
     $html.='<td style="text-align: right"><b>'.number_format($net_total).'</b></td>';
@@ -92,6 +93,7 @@ if ($promotion_id > 0) {
         $member_data = getMemberDatamodel($connect,$row['member_id']);
 
         $html.='<tr>';
+        $html.='<td>'.date('Y-m-d H:i:s',strtotime($member_data[0]['active_date'])).'</td>';
         $html.='<td>'.getMemberaccount($connect,$row['member_id']).'</td>';
         $html.='<td>'.getMembername($connect,$row['member_id']).'</td>';
         $html.='<td>'.$member_data[0]['phone'].'</td>';
@@ -104,7 +106,7 @@ if ($promotion_id > 0) {
         $html.='</tr>';
     }
     $html.='<tr>';
-    $html.='<td colspan="6" style="text-align: right"><b>Total</b></td>';
+    $html.='<td colspan="7" style="text-align: right"><b>Total</b></td>';
     $html.='<td style="text-align: right"><b>'.number_format($in_total).'</b></td>';
     $html.='<td style="text-align: right"><b>'.number_format($out_total).'</b></td>';
     $html.='<td style="text-align: right"><b>'.number_format($net_total).'</b></td>';

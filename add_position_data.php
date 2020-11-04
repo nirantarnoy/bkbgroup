@@ -14,6 +14,8 @@ $is_capital = 0;
 $is_bank = 0;
 $is_user = 0;
 $is_position = 0;
+$is_bank_account = 0;
+$is_statistics = 0;
 $is_all = 0;
 
 
@@ -59,12 +61,21 @@ if (isset($_POST['is_position'])) {
         $is_position = 1;
     }
 }
+if (isset($_POST['is_company_account'])) {
+    if($_POST['is_company_account'] == 'on'){
+        $is_bank_account = 1;
+    }
+}
+if (isset($_POST['is_statistics'])) {
+    if($_POST['is_statistics'] == 'on'){
+        $is_statistics = 1;
+    }
+}
 if (isset($_POST['is_all'])) {
     if($_POST['is_all'] == 'on'){
         $is_all = 1;
     }
 }
-
 
 if (isset($_POST['recid'])) {
     $recid = $_POST['recid'];
@@ -74,8 +85,8 @@ if (isset($_POST['recid'])) {
 
 if ($recid <= 0) {
     if ($name != '') {
-        $sql = "INSERT INTO position_user (name,description,is_member,is_accounting,is_promotion,is_capital,is_bank,is_user,is_position,is_all)
-           VALUES ('$name','$description','$is_member','$is_accounting','$is_promotion','$is_capital','$is_bank','$is_user','$is_position','$is_all')";
+        $sql = "INSERT INTO position_user (name,description,is_member,is_accounting,is_promotion,is_capital,is_bank,is_user,is_position,is_company_account,is_statistics,is_all)
+           VALUES ('$name','$description','$is_member','$is_accounting','$is_promotion','$is_capital','$is_bank','$is_user','$is_position','$is_bank_account','$is_statistics','$is_all')";
         if ($result = $connect->query($sql)) {
             $_SESSION['msg-success'] = 'Saved data successfully';
             header('location:position.php');
@@ -86,7 +97,7 @@ if ($recid <= 0) {
     }
 
 } else {
-    $sql = "UPDATE position_user SET name='$name',description='$description',is_member='$is_member',is_accounting='$is_accounting',is_promotion='$is_promotion',is_capital='$is_capital',is_bank='$is_bank',is_user='$is_user',is_position='$is_position',is_all='$is_all'";
+    $sql = "UPDATE position_user SET name='$name',description='$description',is_member='$is_member',is_accounting='$is_accounting',is_promotion='$is_promotion',is_capital='$is_capital',is_bank='$is_bank',is_user='$is_user',is_position='$is_position',is_company_account='$is_bank_account',is_statistics='$is_statistics',is_all='$is_all'";
     $sql.=" WHERE id='$recid'";
 
     if ($result = $connect->query($sql)) {

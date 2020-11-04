@@ -1,8 +1,24 @@
 <?php
+session_start();
 include("common/dbcon.php");
 include("models/PromotionModel.php");
+include("models/PositionModel.php");
+include("models/UserModel.php");
+
 $id = '';
 $html = '';
+
+$is_all = 0;
+$user = 0;
+$user_position = 0;
+
+if (isset($_SESSION['userid'])) {
+    $user = $_SESSION['userid'];
+}
+if ($user) {
+    $user_position = getUserposition($user,$connect);
+}
+$is_all = checkIsAdmin($user_position,$connect);
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
@@ -25,6 +41,11 @@ if ($id) {
        $html.='<tr>';
         $html.='<td>'.date("d/m/Y H:i:s",strtotime($row['trans_date'])).'</td>';
         $html.='<td>'.number_format($row['cash_out']).'</td>';
+        if($is_all){
+            $html.='<td style="text-align: center"><div onclick="deleteTrans($(this),2)" data-id="'.$row['id'].'" class="btn btn-danger btn-sm">Delete</div></td>';
+        }else{
+            $html.='<td style="text-align: center"></td>';
+        }
         $html.='</tr>';
     }
 

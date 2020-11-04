@@ -7,6 +7,10 @@ session_start();
 //}
 //echo date('H:i');return;
 include "header.php";
+include "models/BankCompanyModel.php";
+include "models/CurrencyModel.php";
+
+$bank_data = getBankAccountmodel($connect);
 
 $position_data = getPositionmodel($connect);
 $per_check = checkPer($user_position,"is_capital", $connect);
@@ -56,6 +60,12 @@ if(isset($_SESSION['msg-error'])){
                            placeholder="From Date">
                     <input type="text" class="form-control search-to-date" id="search-to-date" name="search_to_date"
                            placeholder="To Date">
+                    <select name="search_currency" id="" class="form-control search-currency" required>
+                        <option value="0">--Select Currency--</option>
+                        <?php for ($i = 0; $i <= count($currency) - 1; $i++): ?>
+                            <option value="<?= $currency[$i]['id'] ?>"><?= $currency[$i]['name'] ?></option>
+                        <?php endfor; ?>
+                    </select>
                     <input type="text" class="form-control search-text" id="search-text" name="search_text"
                            placeholder="Search">
 <!--                    <button class="btn btn-primary">Search</button>-->
@@ -125,12 +135,40 @@ if(isset($_SESSION['msg-error'])){
                     <br />
                     <div class="row">
                         <div class="col-lg-12">
+                            <label for="">Currency</label>
+                            <select name="currency_id" id="" class="form-control currency-id" required>
+                                <option value="0">--Select Currency--</option>
+                                <?php for ($i = 0; $i <= count($currency) - 1; $i++): ?>
+                                    <option value="<?= $currency[$i]['id'] ?>"><?= $currency[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
                             <label for="">Price</label>
                             <input type="text" class="form-control price" name="price" value="0"
                                    placeholder="Price" onchange="callist($(this))">
                         </div>
                     </div>
                     <br />
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <label for="">Bank Name</label>
+                            <select name="bank_id" id="" class="form-control bank-id" required>
+                                <option value="0">--Select Bank name--</option>
+                                <?php for ($i = 0; $i <= count($bank_data) - 1; $i++): ?>
+                                    <option value="<?= $bank_data[$i]['id'] ?>"><?= $bank_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="" style="color: white">Balance</label>
+                            <div class="btn btn-primary btn-balance-show">Balance</div>
+                        </div>
+                    </div>
+                    <br>
                     <div class="row">
                         <div class="col-lg-12">
                             <label for="">Cashier Name</label>
@@ -161,6 +199,49 @@ if(isset($_SESSION['msg-error'])){
         </div>
     </div>
 </div>
+
+
+<div class="modal" id="bankbalanceModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title-" style="color: #1c606a">Account Balance</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped table-balance">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Account number</th>
+                                <th>Bank Name</th>
+                                <th>Balance</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <!--                <button type="button" class="btn btn-primary btn-export"><i class="fa fa-download"></i> Export</button>-->
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php
 include "footer.php";
 ?>
@@ -192,6 +273,7 @@ include "footer.php";
         $(".price").val(0);
         $(".total-amount").val(0);
         $(".cashier-name").val('');
+        $(".bank-id").val(0).change();
 
         $("#myModal").modal("show");
     }
@@ -218,11 +300,13 @@ include "footer.php";
                 var from_date = $('#search-from-date').val();
                 var to_date = $('#search-to-date').val();
                 var search_text = $('#search-text').val();
+                var search_currency = $('.search-currency').val();
                 // var index = $('#search-index').val();
                 // // Append to data
                 data.searchByFromdate = from_date;
                 data.searchByTodate = to_date;
                 data.searchByText = search_text;
+                data.searchByCurrency = search_currency;
                 // data.searchByIndex = index;
             }
         },
@@ -289,6 +373,9 @@ include "footer.php";
     $("#search-to-date").change(function(){
         dataTablex.draw();
     });
+    $(".search-currency").change(function(){
+        dataTablex.draw();
+    });
 
     // $("#dataTable").dataTable({
     //     "processing": true,
@@ -308,6 +395,24 @@ include "footer.php";
     //     ],
     // });
 
+    $(".btn-balance-show").click(function(){
+        var bank_id = $(".bank-id").val();
+        if(bank_id > 0){
+            $.ajax({
+                'type': 'post',
+                'dataType': 'html',
+                'async': false,
+                'url': 'balance_fetch.php',
+                'data': {'id': bank_id},
+                'success': function (data) {
+                    $(".table-balance tbody").html(data);
+                    $("#bankbalanceModal").modal("show");
+                }
+            });
+        }
+
+    });
+
     function showupdate(e) {
         var recid = e.attr("data-id");
         if (recid != '') {
@@ -317,6 +422,9 @@ include "footer.php";
             var total = 0;
             var cashier_name = '';
             var x_date = null;
+            var bank_id = 0 ;
+            var currency_id = 0;
+
             $.ajax({
                 'type': 'post',
                 'dataType': 'json',
@@ -332,6 +440,8 @@ include "footer.php";
                         total = data[0]['total'];
                         cashier_name = data[0]['cashier_name'];
                         x_date = data[0]['expend_date'];
+                        bank_id = data[0]['bank_id'];
+                        currency_id = data[0]['currency_id'];
                     }
                 }
             });
@@ -343,6 +453,8 @@ include "footer.php";
             $(".total-amount").val(total);
             $(".cashier-name").val(cashier_name);
             $(".expend-date").val(x_date);
+            $(".bank-id").val(bank_id).change();
+            $(".currency-id").val(currency_id).change();
 
             $(".modal-title").html('Update Capital');
 

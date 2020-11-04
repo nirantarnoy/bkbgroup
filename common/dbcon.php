@@ -1,11 +1,10 @@
 <?php
 //$HOST_NAME = "163.44.198.51";
-//$DB_NAME = "cp628552_bkb";
+//$DB_NAME = "cp628552_bkb_asia";
 //$CHAR_SET = "charset=utf8";
 //$USERNAME = "cp628552_root";
-
+//
 //$PASSWORD = "58130_58130";
-
 
 $HOST_NAME = "localhost";
 $DB_NAME = "acc_member";
