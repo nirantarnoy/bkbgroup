@@ -88,7 +88,8 @@ if (isset($_SESSION['msg-error'])) {
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <input type="hidden" name="recid" class="user-recid" value="">
+                    <input type="hidden" name="recid" class="user-recid" value="0">
+                    <input type="hidden" name="action_type" class="action-type" value="create">
                     <div class="row">
                         <div class="col-lg-4">
                             <label for="">Account ID</label>
@@ -225,8 +226,14 @@ include "footer.php";
             event.preventDefault();
         }
     });
+    $(".bank-account,.phone").on('paste', function (event) {
+        if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
+            event.preventDefault();
+        }
+    });
     function showaddmember(e) {
         $(".user-recid").val();
+        $(".action-type").val('create');
         $(".account-id").val('');
         $(".member-name").val('');
         $(".member-dob").val('Date of birth');
@@ -252,6 +259,7 @@ include "footer.php";
         "processing": true,
         "serverSide": true,
         "order": [[1, "asc"]],
+        "pageLength": 100,
         "ajax": {
             url: "member_fetch.php",
             type: "POST"
@@ -303,6 +311,7 @@ include "footer.php";
             });
 
             $(".user-recid").val(recid);
+            $(".action-type").val('update');
             $(".account-id").val(account_id);
             $(".member-name").val(name);
             $(".member-dob").val(dob);

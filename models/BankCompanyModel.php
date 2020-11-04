@@ -1,29 +1,30 @@
 <?php
-function getDisplayname($id ,$connect){
-    $query = "SELECT * FROM user WHERE id='$id'";
+function getBankAccountmodel($connect){
+    $data = [];
+    $query = "SELECT * FROM bank_account_company";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result = $statement->fetchAll();
     $filtered_rows = $statement->rowCount();
     if($filtered_rows > 0){
         foreach($result as $row){
-           return $row['display_name'];
+            array_push($data,['id'=>$row['id'],'name'=>$row['name']]);
         }
     }
-}
-function getUserposition($id ,$connect){
-    $query = "SELECT * FROM user WHERE id='$id'";
-    $statement = $connect->prepare($query);
-    $statement->execute();
-    $result = $statement->fetchAll();
-    $filtered_rows = $statement->rowCount();
-    if($filtered_rows > 0){
-        foreach($result as $row){
-            return $row['position_id'];
-        }
-    }else{
-        return 0;
-    }
-}
 
+    return $data;
+}
+function getBankAccountname($connect,$code){
+    $query = "SELECT * FROM bank_account_company WHERE id='$code'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['name'];
+        }
+    }
+
+}
 ?>

@@ -21,7 +21,7 @@ if ($id) {
 //           ,'is_tool'=>$row['is_tool'],'is_user'=>$row['is_user'],'is_all'=>$row['is_all']]);
 //    }
     foreach ($result as $row) {
-        array_push($data,['id'=>$row['id'],'list'=>$row['list'],'qty'=>$row['qty'],'price'=>$row['price'],'total'=>$row['total'],'cashier_name'=>$row['cashier_name'],'expend_date'=>date('Y-m-d',strtotime($row['expend_date']))]);
+        array_push($data,['id'=>$row['id'],'list'=>$row['list'],'qty'=>$row['qty'],'price'=>$row['price'],'total'=>$row['total'],'cashier_name'=>$row['cashier_name'],'expend_date'=>date('Y-m-d',strtotime($row['expend_date'])),'bank_id'=>$row['company_bank_account_id'],'currency_id'=>$row['currency_id']]);
     }
 
     echo json_encode($data);

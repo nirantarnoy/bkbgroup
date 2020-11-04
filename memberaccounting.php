@@ -9,6 +9,9 @@ if (!isset($_SESSION['userid'])) {
 include "header.php";
 include("models/BankModel.php");
 include("models/PromotionModel.php");
+include("models/BankCompanyModel.php");
+//include("models/PositionModel.php");
+
 
 $position_data = getPositionmodel($connect);
 $per_check = checkPer($user_position, "is_accounting", $connect);
@@ -16,10 +19,13 @@ if (!$per_check) {
     header("location:errorpage.php");
 }
 
-$bank_data = getBankmodel($connect);
+
+$bank_data =getBankmodel($connect);
+$bank_com_data = getBankAccountmodel($connect);
 $promotion_data = getPromotionmodel($connect);
 $noti_ok = '';
 $noti_error = '';
+
 
 $c_date = date('d/m/Y');
 
@@ -57,6 +63,7 @@ if (isset($_SESSION['msg-error'])) {
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
+                    <th>#</th>
                     <th>Active Date</th>
                     <th>ID</th>
                     <th>Name</th>
@@ -79,7 +86,7 @@ if (isset($_SESSION['msg-error'])) {
 <div class="modal" id="myModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form action="add_member_datax.php" id="form-user" method="post">
+            <form action="#" id="form-user" method="post">
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 class="modal-title" style="color: #1c606a">Add New Member</h4>
@@ -177,6 +184,7 @@ if (isset($_SESSION['msg-error'])) {
                         <div class="col-lg-4" style="border-left: 1px solid gray;">
                             <h4><label for="">Record Transaction</label></h4>
                             <input type="hidden" class="select-member-id" name="member_id" value="">
+                            <input type="hidden" class="action-type" value="" name="action_type">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label for="">Deposit</label>
@@ -193,6 +201,22 @@ if (isset($_SESSION['msg-error'])) {
                                 </div>
                             </div>
                             <br/>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <label for="">Bank Name</label>
+                                    <select name="bank_com_id" id="" class="form-control bank-com-id" required>
+                                        <option value="0">--Select Bank name--</option>
+                                        <?php for ($i = 0; $i <= count($bank_com_data) - 1; $i++): ?>
+                                            <option value="<?= $bank_com_data[$i]['id'] ?>"><?= $bank_com_data[$i]['name'] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="" style="color: white">Balance</label>
+                                    <div class="btn btn-primary btn-balance-show">Balance</div>
+                                </div>
+                            </div>
+                            <br>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <label for="">Promotion</label>
@@ -327,6 +351,7 @@ if (isset($_SESSION['msg-error'])) {
                         <table class="table table-bordered table-striped table-report">
                             <thead>
                             <tr>
+                                <th>Active Date</th>
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Phone</th>
@@ -376,6 +401,7 @@ if (isset($_SESSION['msg-error'])) {
                             <tr>
                                 <th>Date</th>
                                 <th>Promotion list</th>
+                                <th style="text-align: center">-</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -415,6 +441,7 @@ if (isset($_SESSION['msg-error'])) {
                             <tr>
                                 <th>Date</th>
                                 <th>Amount</th>
+                                <th style="text-align: center">-</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -454,6 +481,7 @@ if (isset($_SESSION['msg-error'])) {
                             <tr>
                                 <th>Date</th>
                                 <th>Amount</th>
+                                <th style="text-align: center">-</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -494,6 +522,48 @@ if (isset($_SESSION['msg-error'])) {
                             <tr>
                                 <th>Date</th>
                                 <th>Amount</th>
+                                <th style="text-align: center">-</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <!--                <button type="button" class="btn btn-primary btn-export"><i class="fa fa-download"></i> Export</button>-->
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="bankbalanceModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title-" style="color: #1c606a">Account Balance</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped table-balance">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Account number</th>
+                                <th>Bank Name</th>
+                                <th>Balance</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -611,6 +681,24 @@ include "footer.php";
         }
     });
 
+    $(".btn-balance-show").click(function(){
+        var bank_id = $(".bank-com-id").val();
+        if(bank_id > 0){
+            $.ajax({
+                'type': 'post',
+                'dataType': 'html',
+                'async': false,
+                'url': 'balance_fetch.php',
+                'data': {'id': bank_id},
+                'success': function (data) {
+                      $(".table-balance tbody").html(data);
+                      $("#bankbalanceModal").modal("show");
+                }
+            });
+        }
+
+    });
+
     $(".btn-search-data").click(function () {
         var member_id = $(".select-member-id").val();
         var promotion = $(".find-promotion").val();
@@ -667,6 +755,16 @@ include "footer.php";
         var withdraw = $(".withdraw").val();
         var promotion = $(".promotion-id").val();
         var turnover = $(".turnover").val();
+        var action_type = $(".action-type").val();
+        var bank_id = $(".bank-com-id").val();
+
+        if(deposit > 0 || withdraw >0){
+            if(bank_id == 0){
+                alert("Please select bank before.");
+                $(".bank-com-id").focus();
+                return;
+            }
+        }
 
         if (member_id > 0) {
             $.ajax({
@@ -679,7 +777,9 @@ include "footer.php";
                     'deposit': deposit,
                     'withdraw': withdraw,
                     'promotion_id': promotion,
-                    'turnover': turnover
+                    'turnover': turnover,
+                    'action_type': action_type,
+                    'bank_id': bank_id
                 },
                 'success': function (data) {
                     if (data == 1) {
@@ -688,6 +788,7 @@ include "footer.php";
                         $(".deposit").val(0);
                         $(".withdraw").val(0);
                         $(".turnover").val(0);
+                        $(".bank-id").val(0).change();
                         //$(".btn-search-data").trigger('click');
                         get_last_promotion(member_id);
                         get_last_turnover(member_id);
@@ -752,6 +853,41 @@ include "footer.php";
         }
     }
 
+    function deleteTrans(e, trans_type){
+        var recid = e.attr('data-id');
+        var curren_id = $(".select-member-id").val();
+        if(curren_id && recid){
+            if(confirm('Are you sure to delete?')){
+                $.ajax({
+                    'type': 'post',
+                    'dataType': 'html',
+                    'async': false,
+                    'url': 'delete_trans.php',
+                    'data': {'recid': recid},
+                    'success': function (data) {
+                        if (data > 0) {
+                          if(trans_type == 1){
+                              show_deposit_history(e);
+                          }
+                            if(trans_type == 2){
+                                show_withdraw_history(e);
+                            }
+                            if(trans_type == 3){
+                                show_pro_history(e);
+                            }
+                            if(trans_type == 4){
+                                show_turnover_history(e);
+                            }
+                          get_last_cash(curren_id);
+                          get_last_turnover(curren_id);
+                          get_last_promotion(curren_id);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
     function showreport(e) {
         $("#reportModal").modal("show");
     }
@@ -763,11 +899,14 @@ include "footer.php";
         $("#myModal").modal("show");
     }
 
-    $("#dataTable").append('<tfoot><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align: right"></th><th></th><th></th><th></th></tfoot>');
+    $("#dataTable").append('<tfoot><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align: right"></th><th></th><th></th><th></th></tfoot>');
     $("#dataTable").dataTable({
         "processing": true,
         "serverSide": true,
-        "order": [[1, "asc"]],
+        "order": [[1, "desc"]],
+        "pageLength": 100,
+        //"order": [],
+        //"aaSorting": [[ 8, "desc" ]],
         "ajax": {
             url: "member_account_fetch.php",
             type: "POST"
@@ -778,15 +917,23 @@ include "footer.php";
                 "orderable": false,
             },
             {
-                targets: [7, 8, 9],
+                type: 'date',
+                targets: [ 1 ]
+            },
+            // {
+            //     type: 'numeric-comma',
+            //     targets:  [8]
+            // },
+            {
+                targets: [8, 9, 10],
                 className: 'text-right'
             },
 
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
             /* numbers less than or equal to 0 should be in red text */
-            if (parseFloat(aData[9]) < 0) {
-                jQuery('td:eq(9)', nRow).addClass('text-danger');
+            if (parseFloat(aData[10]) < 0) {
+                jQuery('td:eq(10)', nRow).addClass('text-danger');
             }
             return nRow;
         },
@@ -800,7 +947,7 @@ include "footer.php";
                         i : 0;
             };
             var total_in = api
-                .column(7)
+                .column(8)
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
@@ -808,7 +955,7 @@ include "footer.php";
                 }, 0);
             var all_total_in = addCommas(parseFloat(total_in));
             var total_out = api
-                .column(8)
+                .column(9)
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
@@ -816,7 +963,7 @@ include "footer.php";
                 }, 0);
             var all_total_out = addCommas(parseFloat(total_out));
             var total_net = api
-                .column(9)
+                .column(10)
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
@@ -828,10 +975,10 @@ include "footer.php";
 
             // Update footer
             // var numFormat = $.fn.dataTable.render.number( '\,', '.', 2, '£' ).display;
-            $(api.column(0).footer()).html('<p style="text-align: right">Total</p>');
-            $(api.column(7).footer()).html(all_total_in);
-            $(api.column(8).footer()).html(all_total_out);
-            $(api.column(9).footer()).html(all_total_net);
+            $(api.column(1).footer()).html('<p style="text-align: right">Total</p>');
+            $(api.column(8).footer()).html(all_total_in);
+            $(api.column(9).footer()).html(all_total_out);
+            $(api.column(10).footer()).html(all_total_net);
         }
 
     });
@@ -890,6 +1037,9 @@ include "footer.php";
         $(".withdraw").val(0);
         $(".turnover").val(0);
         $(".text-turnover-amount").val(0);
+        $(".bank-com-id").val(0).change();
+
+        $(".action-type").val("create");
         //  alert(recid);
         if (recid != '') {
             var account_id = '';
@@ -1140,6 +1290,9 @@ include "footer.php";
                     if (data != '') {
                         $("table.table-promotion-history tbody").html(data);
                         $("#promotionHistoryModal").modal("show");
+                    }else{
+                        $("table.table-promotion-history tbody").html('');
+                        $("#promotionHistoryModal").modal("show");
                     }
                 }
             });
@@ -1158,6 +1311,9 @@ include "footer.php";
                 'success': function (data) {
                     if (data != '') {
                         $("table.table-turnover-history tbody").html(data);
+                        $("#turnoverHistoryModal").modal("show");
+                    }else{
+                        $("table.table-turnover-history tbody").html('');
                         $("#turnoverHistoryModal").modal("show");
                     }
                 }
@@ -1178,6 +1334,9 @@ include "footer.php";
                     if (data != '') {
                         $("table.table-deposit-history tbody").html(data);
                         $("#depositHistoryModal").modal("show");
+                    }else{
+                        $("table.table-deposit-history tbody").html('');
+                        $("#depositHistoryModal").modal("show");
                     }
                 }
             });
@@ -1186,6 +1345,7 @@ include "footer.php";
 
     function show_withdraw_history(e) {
         var id = $(".user-recid").val();
+      //  alert(id);
         if (id) {
             $.ajax({
                 'type': 'post',
@@ -1196,6 +1356,9 @@ include "footer.php";
                 'success': function (data) {
                     if (data != '') {
                         $("table.table-withdraw-history tbody").html(data);
+                        $("#withdrawHistoryModal").modal("show");
+                    }else{
+                        $("table.table-withdraw-history tbody").html('');
                         $("#withdrawHistoryModal").modal("show");
                     }
                 }

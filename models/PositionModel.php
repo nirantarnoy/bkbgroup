@@ -81,4 +81,15 @@ function checkInitper($pos_id,$connect){
 
     return $init_per;
 }
+function checkIsAdmin($pos_id,$connect){
+    $query = "SELECT * FROM position_user WHERE id='$pos_id' AND is_all =1";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    // $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+
+    return $filtered_rows;
+
+    //return false;
+}
 ?>

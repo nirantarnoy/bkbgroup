@@ -30,8 +30,8 @@ if (isset($_POST['to_date'])) {
 }
 
 if ($promotion_id > 0) {
-    $f_date = date('Y-m-d H:m:i', strtotime($from_date));
-    $t_date = date('Y-m-d H:m:i', strtotime($to_date));
+    $f_date = date('Y-m-d H:i:s', strtotime($from_date));
+    $t_date = date('Y-m-d H:i:s', strtotime($to_date));
 
     $query = "SELECT member_id,SUM(cash_in) as cash_in,SUM(cash_out) as cash_out, SUM(net_win) as net_win FROM member_account WHERE promotion_id='$promotion_id' ";
     if ($f_date != null && $t_date != null) {
@@ -46,8 +46,8 @@ if ($promotion_id > 0) {
     $result = $statement->fetchAll();
 } else {
 
-        $f_date = date('Y-m-d H:m:i', strtotime($from_date));
-        $t_date = date('Y-m-d H:m:i', strtotime($to_date));
+        $f_date = date('Y-m-d H:i:s', strtotime($from_date));
+        $t_date = date('Y-m-d H:i:s', strtotime($to_date));
 
         $query = "SELECT member_id,SUM(cash_in) as cash_in,SUM(cash_out) as cash_out, SUM(net_win) as net_win FROM member_account WHERE id > 0 ";
         if ($f_date != null && $t_date != null) {
@@ -95,6 +95,7 @@ if ($promotion_id > 0) {
 <div id="SiXhEaD_Excel" align=center x:publishsource="Excel">
     <table x:str border=1 cellpadding=0 cellspacing=1 width=100% style="border-collapse:collapse">
         <tr>
+            <td width="200" align="center" valign="middle"><strong>Active Date</strong></td>
             <td width="200" align="center" valign="middle"><strong>AccountId</strong></td>
             <td width="200" align="center" valign="middle"><strong>Name</strong></td>
             <td width="200" align="center" valign="middle"><strong>Phone</strong></td>
@@ -122,6 +123,7 @@ if ($promotion_id > 0) {
 
                 ?>
                 <tr>
+                    <td align="center" valign="middle"><?php echo date('Y-m-d H:i:s',strtotime($member_data[0]['active_date'])); ?></td>
                     <td align="center" valign="middle"><?php echo getMemberaccount($connect,$rows['member_id']); ?></td>
                     <td align="center" valign="middle"><?php echo getMembername($connect,$rows['member_id']); ?></td>
                     <td align="center" valign="middle"><?php echo $member_data[0]['phone']; ?></td>
@@ -136,7 +138,7 @@ if ($promotion_id > 0) {
                    endforeach;
                 ?>
             <tr>
-                <td align="center" colspan="6" valign="middle" style="text-align: right"> Total</td>
+                <td align="center" colspan="7" valign="middle" style="text-align: right"> Total</td>
                 <td align="center" valign="middle" style="text-align: right"><?php echo number_format($in_total); ?></td>
                 <td align="center" valign="middle" style="text-align: right"><?php echo number_format($out_total); ?></td>
                 <td align="center" valign="middle" style="text-align: right"><?php echo number_format($net_total); ?></td>

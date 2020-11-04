@@ -13,6 +13,12 @@ if(isset($_POST["searchByText"])){
     $query .= ' AND (list LIKE "%'.$_POST["searchByText"].'%"';
     $query .= 'OR price LIKE "%'.$_POST["searchByText"].'%") ';
 }
+if(isset($_POST["searchByCurrency"])){
+    if($_POST["searchByCurrency"] > 0){
+        $query .= ' AND currency_id ='.$_POST["searchByCurrency"];
+    }
+
+}
 if(isset($_POST["searchByFromdate"]) && isset($_POST["searchByTodate"])){
     if($_POST["searchByFromdate"] != null && $_POST["searchByTodate"] != null){
         $from_date = explode('/',$_POST["searchByFromdate"]);
