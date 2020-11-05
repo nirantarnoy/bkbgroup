@@ -72,7 +72,7 @@ function createtrans($connect , $bank_id, $activity_name, $trans_type, $amt ,$us
              if($trans_type ==1){
                  transInUpdate($connect, $bank_id, $amt);
              }else if($trans_type == 2){
-                 transInUpdate($connect, $bank_id, $amt);
+                 transOutUpdate($connect, $bank_id, $amt);
              }
             return 1;
         }else{

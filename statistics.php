@@ -91,37 +91,37 @@ if (isset($_SESSION['msg-error'])) {
                     <div class="col-lg-6"><input type="text" class="form-control net-win" readonly value="0"></div>
                 </div>
             </div>
-            <div class="col-lg-6" style="border-left: 1px dashed gray">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                         <h4>My bank account</h4>
-                    </div>
-                </div>
+<!--            <div class="col-lg-6" style="border-left: 1px dashed gray">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-lg-12 text-center">-->
+<!--                         <h4>My bank account</h4>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <br />-->
+<!--                <div class="row">-->
+<!--                    <div class="col-lg-6">-->
+<!--                        <label for="">Bank Name</label>-->
+<!--                        <select name="bank_id" id="" class="form-control bank-top-id" required>-->
+<!--                            <option value="0">--Select Bank name--</option>-->
+                            <?php //for ($i = 0; $i <= count($bank_data) - 1; $i++): ?>
+<!--                                <option value="--><?php ////echo $bank_data[$i]['id'] ?><!--">--><?php ////echo $bank_data[$i]['name'] ?><!--</option>-->
+                            <?php //endfor; ?>
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-6">-->
+<!--                        <label for="">Balance</label>-->
+<!--                        <input type="text" class="form-control txt-top-balance" value="0" readonly>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <br />
-                <div class="row">
-                    <div class="col-lg-6">
-                        <label for="">Bank Name</label>
-                        <select name="bank_id" id="" class="form-control bank-top-id" required>
-                            <option value="0">--Select Bank name--</option>
-                            <?php for ($i = 0; $i <= count($bank_data) - 1; $i++): ?>
-                                <option value="<?= $bank_data[$i]['id'] ?>"><?= $bank_data[$i]['name'] ?></option>
-                            <?php endfor; ?>
-                        </select>
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="">Balance</label>
-                        <input type="text" class="form-control txt-top-balance" value="0" readonly>
-                    </div>
-                </div>
-                <br />
-                <div class="row">
-                    <div class="col-lg-4"></div>
-                    <div class="col-lg-4">
-                        <div class="btn btn-primary btn-top-show-all">Show all account</div>
-                    </div>
-                    <div class="col-lg-4"></div>
-                </div>
-                <br />
+<!--                <div class="row">-->
+<!--                    <div class="col-lg-4"></div>-->
+<!--                    <div class="col-lg-4">-->
+<!--                        <div class="btn btn-primary btn-top-show-all">Show all account</div>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-4"></div>-->
+<!--                </div>-->
+<!--                <br />-->
             </div>
         </div>
     </div>

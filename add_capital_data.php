@@ -53,6 +53,12 @@ if (isset($_POST['recid'])) {
     $recid = $_POST['recid'];
 }
 
+if($total == ''){
+    $total = 0;
+}else{
+    $total = ($total * -1);
+}
+
 $xx_date = null;
 $d = explode('/',$expend_date);
 if(count($d) >0){
