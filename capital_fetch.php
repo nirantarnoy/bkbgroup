@@ -92,7 +92,7 @@ foreach ($result as $row){
     $sub_array[] = number_format($row['total']);
   //  $sub_array[] = '<p style="font-weight: ;text-align: right" class="line-total">'.number_format($row['total']).'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['cashier_name'].'</p>';
-    $sub_array[] = '<div class="btn btn-secondary" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
+    $sub_array[] = '<div class="btn btn-secondary" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger" data-id="'.$row['id'].'" data-var="'.$row['total'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
 
     $data[] = $sub_array;
 }

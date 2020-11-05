@@ -53,7 +53,7 @@ foreach ($result as $row){
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['bank_account'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['bank_name'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: right">'.$row['balance'].'</p>';
-    $sub_array[] = '<div class="btn btn-secondary" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-info" data-id="'.$row['id'].'" onclick="showhistory($(this))"><i class="fas fa-clock"></i> History</div><span> </span><div class="btn btn-danger" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
+    $sub_array[] = '<div class="btn btn-secondary" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-info" data-id="'.$row['id'].'" data-var="'.$row['name'].'" onclick="showhistory($(this))"><i class="fas fa-clock"></i> History</div><span> </span><div class="btn btn-danger" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
 
     $data[] = $sub_array;
 }

@@ -9,6 +9,7 @@ session_start();
 include "header.php";
 include "models/BankModel.php";
 
+
 $bank_data = getBankmodel($connect);
 $position_data = getPositionmodel($connect);
 $per_check = checkPer($user_position,"is_bank", $connect);
@@ -129,6 +130,41 @@ if(isset($_SESSION['msg-error'])){
         </div>
     </div>
 </div>
+
+<div class="modal" id="historyModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="color: #1c606a">Bank transaction history <span style="color: red" class="bank-name-display"></span></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="historydataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                    <th>User</th>
+                                    <th>Amount</th>
+<!--                                    <th>Balance</th>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <?php
 include "footer.php";
 ?>
@@ -159,7 +195,51 @@ include "footer.php";
 
         ],
     });
+    $("#historydataTable").append('<tfoot><th></th><th></th><th></th><th></th><th style="text-align: right"></th></tfoot>');
+    var historydataTable = $("#historydataTable").DataTable({
+        "processing": true,
+        "serverSide": true,
+        "order": [[1, "asc"]],
+        "ajax": {
+            url: "bank_trans_fetch.php",
+            type: "POST"
+        },
+        "columnDefs": [
+            {
+                "targets": [0],
+                "orderable": false,
+            },
+            {
+                targets: [4],
+                className: 'text-right'
+            },
+        ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            // converting to interger to find total
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            var total = api
+                .column(4)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                    //return a + a;
+                }, 0 );
+            var all_total = addCommas(parseFloat(total));
+            // data = api.column(3, { page: 'current'} ).data();
+            // pageTotal = data.length ? data.reduce( function (a, b) { return intVal(a) + intVal(b); } ) : 0;
 
+            // Update footer
+            // var numFormat = $.fn.dataTable.render.number( '\,', '.', 2, '£' ).display;
+            $( api.column(3).footer() ).html('<p style="text-align: right">Total</p>');
+            $( api.column(4).footer() ).html(all_total);
+        }
+    });
     function showupdate(e) {
         var recid = e.attr("data-id");
         if (recid != '') {
@@ -214,6 +294,17 @@ include "footer.php";
             // e.trigger("click");
         });
     }
+    function showhistory(e){
+        var id = e.attr('data-id');
+        var name = e.attr('data-var');
+        if(id){
+            $(".bank-name-display").html(name);
+            $("#historyModal").modal('show');
+        }else{
+            $(".bank-name-display").html('');
+        }
+
+    }
     function notify() {
         // $.toast({
         //     title: 'Message Notify',
@@ -264,5 +355,16 @@ include "footer.php";
             });
         }
 
+    }
+    function addCommas(nStr) {
+        nStr += '';
+        var x = nStr.split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
     }
 </script>

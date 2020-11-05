@@ -39,7 +39,6 @@ function transOutUpdate($connect, $bank_id , $amount){
         $result = $statement->fetchAll();
         $filtered_rows = $statement->rowCount();
         if($filtered_rows > 0){
-
             foreach($result as $row){
                 $bank_balance = $row['balance'];
             }
@@ -59,5 +58,28 @@ function transOutUpdate($connect, $bank_id , $amount){
         return 0;
     }
 }
+
+function createtrans($connect , $bank_id, $activity_name, $trans_type, $amt ,$user){
+    if($bank_id >0 && $activity_name !='' && $trans_type > 0 && $amt > 0 && $user > 0 ){
+         $t_amt = $amt;
+         if($trans_type == 2){
+             $t_amt = ($amt * -1);
+         };
+         $t_date = date('Y-m-d H:m:i');
+         $sql = "INSERT INTO bank_trans(trans_date,bank_id,activity,trans_type,amount,user_id) VALUES ('$t_date','$bank_id','$activity_name','$trans_type','$t_amt','$user')";
+
+         if ($result = $connect->query($sql)) {
+             if($trans_type ==1){
+                 transInUpdate($connect, $bank_id, $amt);
+             }else if($trans_type == 2){
+                 transInUpdate($connect, $bank_id, $amt);
+             }
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+}
+
 
 ?>

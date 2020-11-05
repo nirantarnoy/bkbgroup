@@ -15,8 +15,13 @@ $expend_date = null;
 $cashier_name = '';
 $currency_id = 0;
 $bank_id = 0;
+$user_id = 0;
 
 $recid = 0;
+
+if (isset($_SESSION['userid'])) {
+    $user_id = $_SESSION['userid'];
+}
 
 
 if (isset($_POST['list'])) {
@@ -57,14 +62,15 @@ $x_date = date('Y-m-d', strtotime($xx_date));
 //echo $x_date;return;
 
 
-if ($recid <= 0 && $list != '') {
+if ($recid <= 0 && $list != '' && $user_id) {
     $t_date = date('Y-m-d H:i:s');
 
     $sql = "INSERT INTO capital (trans_date,list,qty,price,total,cashier_name,created_by,expend_date,company_bank_account_id,currency_id)
            VALUES ('$t_date','$list','$qty','$price','$total','$cashier_name',1,'$x_date','$bank_id','$currency_id')";
 
     if ($result = $connect->query($sql)) {
-        transInUpdate($connect, $bank_id, 100);
+        createtrans($connect, $bank_id,'capital',1,$qty,$user_id);
+       // transInUpdate($connect, $bank_id, 100);
        // echo "ok";return;
         $_SESSION['msg-success'] = 'Saved data successfully';
         header('location:capital.php');

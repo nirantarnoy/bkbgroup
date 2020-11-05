@@ -61,10 +61,12 @@ if ($recid <= 0 && $action_type == 'create') {
 
         if ($result = $connect->query($sql)) {
             if($withdraw >0 ){
-                transOutUpdate($connect, $bank_id, $withdraw);
+                createtrans($connect, $bank_id,'Member withdraw',2,$qty,$userid);
+               // transOutUpdate($connect, $bank_id, $withdraw);
             }
             if($deposit > 0){
-                transInUpdate($connect, $bank_id, $deposit);
+                createtrans($connect, $bank_id,'Member deposit',1,$qty,$userid);
+               // transInUpdate($connect, $bank_id, $deposit);
             }
             createlogs($connect,$userid,'insert','accounting',getMembername($connect,$member_id));
             echo 1;

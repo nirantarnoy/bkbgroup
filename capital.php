@@ -52,6 +52,7 @@ if(isset($_SESSION['msg-error'])){
     <div class="card-body">
         <form action="delete_capital.php" id="form-delete" method="post">
             <input type="hidden" name="delete_id" class="delete-id" value="">
+            <input type="hidden" name="delete_qty" class="delete-qty" value="">
         </form>
         <div class="row">
             <div class="col-lg-12">
@@ -465,7 +466,9 @@ include "footer.php";
     function recDelete(e) {
         //e.preventDefault();
         var recid = e.attr('data-id');
+        var qty = e.attr('data-var');
         $(".delete-id").val(recid);
+        $(".delete-qty").val(qty);
         swal({
             title: "Are you sure to delete?",
             text: "",
