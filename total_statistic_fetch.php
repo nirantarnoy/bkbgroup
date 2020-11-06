@@ -43,18 +43,32 @@ if($from_date != '' && $to_date !=''){
 //    }
 //    $f_date = date('Y-m-d', strtotime($ff_date));
 //    $t_date = date('Y-m-d', strtotime($tt_date));
-    $f_date = date('Y-m-d H:m:i', strtotime($_POST["from_date"]));
-    $t_date = date('Y-m-d H:m:i',strtotime($_POST["to_date"]));
+//    $f_date = date('Y-m-d H:m:i', strtotime($_POST["from_date"]));
+//    $t_date = date('Y-m-d H:m:i',strtotime($_POST["to_date"]));
+    $f_date = date('Y-m-d H:i:s',strtotime($from_date));
+    $t_date = date('Y-m-d H:i:s',strtotime($to_date));
 }
 
 
-$query = "SELECT SUM(cash_in)as cash_in,SUM(cash_out) as cash_out,SUM(net_win) as net_win FROM member_account WHERE id > 0";
-if($promotion_id != 0){
-    $query.= " AND promotion_id = '$promotion_id'";
+//$query = "SELECT SUM(cash_in)as cash_in,SUM(cash_out) as cash_out,SUM(net_win) as net_win FROM member_account WHERE id > 0 ";
+// if($promotion_id !='' || $promotion_id > 0){
+//    $query .= " AND promotion_id = '$promotion_id'";
+//}
+//if ($f_date != null && $t_date != null) {
+//    $query .= " AND (trans_date >='$f_date' AND trans_date <='$t_date') ";
+//}
+//$query.= " GROUP BY member_id";
+$query = "SELECT SUM(cash_in) as cash_in,SUM(cash_out) as cash_out, SUM(net_win) as net_win FROM member_account WHERE id > 0";
+if($promotion_id  > 0)
+{
+    $query.= " AND promotion_id='$promotion_id'";
 }
-if ($f_date != null && $t_date != null) {
-    $query .= " AND (trans_date >='$f_date' AND trans_date <='$t_date') ";
+if($f_date != '' && $t_date != '')
+{
+    $query.= " AND (trans_date >= '$f_date' AND trans_date <='$t_date')";
 }
+
+//$query.= " GROUP BY member_id";
 $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();

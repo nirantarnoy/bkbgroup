@@ -27,7 +27,7 @@ if($id > 0){
    // echo $bank_id;return;
     $sql = "DELETE FROM capital WHERE id=".$id;
     if ($result = $connect->query($sql)) {
-        createtrans($connect, $bank_id,'Delete capital',2,$qty,$user_id);
+        createtrans($connect, $bank_id,'Delete capital',1,abs($qty),$user_id);
         $_SESSION['msg-success'] = 'Deleted data successfully';
         header('location:capital.php');
     } else {

@@ -8,11 +8,17 @@ if (!isset($_SESSION['userid'])) {
 include("common/dbcon.php");
 include "models/UserModel.php";
 
+$id= 0;
+
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
+}
+
 $query_filter = '';
 $query = "SELECT * FROM bank_trans WHERE ";
-//if(isset($_POST["region_name"])){
-//    $query .= 'region_name LIKE "%'.$_POST["region_name"].'%" AND ';
-//}
+if(isset($_POST["searchId"])){
+    $query .= 'bank_id ='.$_POST["searchId"].'';
+}
 //if(isset($_POST["type_name"])){
 //    $query .= 'proj_type LIKE "%'.$_POST["type_name"].'%" AND ';
 //}
@@ -20,8 +26,9 @@ $query = "SELECT * FROM bank_trans WHERE ";
 //    $query .= 'dept_name LIKE "%'.$_POST["university_name"].'%" AND ';
 //}
 if (isset($_POST["search"]["value"])) {
-    $query .= '(activity LIKE "%' . $_POST["search"]["value"] . '%"';
-    $query .= 'OR bank_id LIKE "%' . $_POST["search"]["value"] . '%") ';
+    $query .= ' AND amount LIKE "%' . $_POST["search"]["value"] . '%"';
+//    $query .= ' AND (amount LIKE "%' . $_POST["search"]["value"] . '%"';
+//    $query .= 'OR bank_id LIKE "%' . $_POST["search"]["value"] . '%") ';
 }
 if (isset($_POST["order"])) {
     $query .= ' ORDER BY ' . $_POST['order']['0']['column'] . ' ' . $_POST['order']['0']['dir'] . ' ';

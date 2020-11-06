@@ -259,7 +259,7 @@ include "footer.php";
         "processing": true,
         "serverSide": true,
         "order": [[1, "asc"]],
-        "pageLength": 100,
+        "pageLength": 25,
         "ajax": {
             url: "member_fetch.php",
             type: "POST"

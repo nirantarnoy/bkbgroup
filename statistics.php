@@ -64,7 +64,7 @@ if (isset($_SESSION['msg-error'])) {
                     </div>
                     <div class="col-lg-3">
                         <label for="">Promotion</label>
-                        <select name="" id="promotion" class="form-control promotion"
+                        <select name="promotion_id" id="promotion" class="form-control promotion-id"
                                 style="margin-left: 5px;">
                             <option value="0">--Select Promotion--</option>
                             <?php for ($i = 0; $i <= count($promotion_data) - 1; $i++): ?>
@@ -91,7 +91,7 @@ if (isset($_SESSION['msg-error'])) {
                     <div class="col-lg-6"><input type="text" class="form-control net-win" readonly value="0"></div>
                 </div>
             </div>
-<!--            <div class="col-lg-6" style="border-left: 1px dashed gray">-->
+            <div class="col-lg-6">
 <!--                <div class="row">-->
 <!--                    <div class="col-lg-12 text-center">-->
 <!--                         <h4>My bank account</h4>-->
@@ -121,7 +121,7 @@ if (isset($_SESSION['msg-error'])) {
 <!--                    </div>-->
 <!--                    <div class="col-lg-4"></div>-->
 <!--                </div>-->
-<!--                <br />-->
+                <br />
             </div>
         </div>
     </div>
@@ -166,7 +166,7 @@ if (isset($_SESSION['msg-error'])) {
                 <div style="height: 2px;"></div>
                 <div class="row">
                     <div class="col-lg-3">
-                        <select name="" id="promotion-bottom" class="form-control promotion-bottom"
+                        <select name="promotion_id" id="promotion-bottom" class="form-control promotion-bottom"
                                 style="margin-left: 5px;">
                             <option value="0">--Select Promotion--</option>
                             <?php for ($i = 0; $i <= count($promotion_data) - 1; $i++): ?>
@@ -340,7 +340,7 @@ include "footer.php";
     $(".btn-search").click(function(){
         var f_date = $(".from-date").val();
         var t_date = $(".to-date").val();
-        var promotion = $(".promotion").val();
+        var promotion = $(".promotion-id").val();
 
         //if(f_date != '' && t_date != ''){
 

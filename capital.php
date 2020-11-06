@@ -291,7 +291,7 @@ include "footer.php";
         "processing": true,
         "serverSide": true,
         "order": [[1, "asc"]],
-        "pageLength": 100,
+        "pageLength": 25,
         "filter": false,
         "ajax": {
             url: "capital_fetch.php",

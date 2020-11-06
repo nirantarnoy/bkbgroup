@@ -904,7 +904,7 @@ include "footer.php";
         "processing": true,
         "serverSide": true,
         "order": [[1, "desc"]],
-        "pageLength": 100,
+        "pageLength": 10,
         //"order": [],
         //"aaSorting": [[ 8, "desc" ]],
         "ajax": {

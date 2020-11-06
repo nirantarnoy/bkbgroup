@@ -7,7 +7,18 @@ if(!isset($_SESSION['userid'])){
 }
 include("common/dbcon.php");
 include("models/BankModel.php");
+include("models/PositionModel.php");
+include("models/UserModel.php");
 
+$user = 0;
+if (isset($_SESSION['userid'])) {
+    $user = $_SESSION['userid'];
+}
+
+if ($user) {
+    $user_position = getUserposition($user,$connect);
+}
+$is_all = checkIsAdmin($user_position,$connect);
 
 $query_filter = '';
 $query = "SELECT * FROM member WHERE ";
@@ -51,6 +62,10 @@ $result = $statement->fetchAll();
 $data = array();
 $filtered_rows = $statement->rowCount();
 foreach ($result as $row){
+    $delete_btn = 'none';
+    if($is_all){
+        $delete_btn = '';
+    }
     $islevel = 'No';
     $iscolor = 'red';
     if($row['is_level2'] == 1){
@@ -67,7 +82,7 @@ foreach ($result as $row){
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['bank_account'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">'.$row['id_number'].'</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left;color: '.$iscolor.';">'.$islevel.'</p>';
-    $sub_array[] = '<div class="btn btn-secondary" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';
+    $sub_array[] = '<div class="btn btn-secondary" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger" data-id="'.$row['id'].'" onclick="recDelete($(this))" style="display: '.$delete_btn.'"><i class="fas fa-trash-alt"></i> Delete</div>';
 
     $data[] = $sub_array;
 }

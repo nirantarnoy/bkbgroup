@@ -8,9 +8,11 @@ session_start();
 //echo date('H:i');return;
 include "header.php";
 include "models/BankModel.php";
+include "models/BankCompanyModel.php";
 
 
 $bank_data = getBankmodel($connect);
+$bank_account_data = getBankAccountmodel($connect);
 $position_data = getPositionmodel($connect);
 $per_check = checkPer($user_position,"is_bank", $connect);
 if(!$per_check){
@@ -112,12 +114,18 @@ if(isset($_SESSION['msg-error'])){
                     <br>
                     <div class="row">
                         <div class="col-lg-12">
+                            <label for="">Adjustment Amount</label>
+                            <input type="text" class="form-control adjust-amount" name="adjust_amount" value="0" >
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
                             <label for="">Balance</label>
                             <input type="text" class="form-control balance-account" name="" value="" readonly >
                         </div>
                     </div>
                     <br>
-
 
                 </div>
 
@@ -141,6 +149,7 @@ if(isset($_SESSION['msg-error'])){
             <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-12">
+                        <input type="hidden" class="bank-history-id" value="0">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="historydataTable" width="100%" cellspacing="0">
                                 <thead>
@@ -183,6 +192,7 @@ include "footer.php";
         "processing": true,
         "serverSide": true,
         "order": [[1, "asc"]],
+        "pageLength": 25,
         "ajax": {
             url: "bank_company_fetch.php",
             type: "POST"
@@ -200,9 +210,13 @@ include "footer.php";
         "processing": true,
         "serverSide": true,
         "order": [[1, "asc"]],
+        "pageLength": 25,
         "ajax": {
             url: "bank_trans_fetch.php",
-            type: "POST"
+            type: "POST",
+            data: function (data) {
+                data.searchId = $('.bank-history-id').val();
+            }
         },
         "columnDefs": [
             {
@@ -256,7 +270,7 @@ include "footer.php";
                 'success': function (data) {
                     if (data.length > 0) {
                         // alert(data[0]['display_name']);
-                        bank_account = data[0]['account_name'];
+                        account_name = data[0]['account_name'];
                         bank_account = data[0]['bank_account'];
                         bank_id = data[0]['bank_id'];
                         balance_acc = data[0]['balance'];
@@ -298,6 +312,8 @@ include "footer.php";
         var id = e.attr('data-id');
         var name = e.attr('data-var');
         if(id){
+            $(".bank-history-id").val(id);
+            historydataTable.draw();
             $(".bank-name-display").html(name);
             $("#historyModal").modal('show');
         }else{
