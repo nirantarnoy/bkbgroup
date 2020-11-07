@@ -116,6 +116,7 @@ if ($user) {
 <div id="wrapper">
 
     <!-- Sidebar -->
+<!--    bg-gradient-primary-->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->

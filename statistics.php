@@ -2,9 +2,9 @@
 ob_start();
 session_start();
 
-//if (!isset($_SESSION['userid'])) {
-//    header("location:loginpage.php");
-//}
+if (!isset($_SESSION['userid'])) {
+    header("location:loginpage.php");
+}
 //echo date('H:i');return;
 include "header.php";
 include "models/BankCompanyModel.php";
@@ -52,7 +52,7 @@ if (isset($_SESSION['msg-error'])) {
         <hr>
 
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class="row">
                     <div class="col-lg-3">
                         <label for="">From Date</label>

@@ -56,6 +56,7 @@
 </head>
 
 <body class="bg-gradient-primary">
+<!--<body class="bg-gradient-success">-->
 
 <div class="container">
     <br>
@@ -97,6 +98,7 @@
                         </div>
 
                         <input type="submit" class="btn btn-primary btn-user btn-block btn-submit" value="Login">
+<!--                        <input type="submit" class="btn btn-success btn-user btn-block btn-submit" value="Login">-->
 
                     </form>
                     <hr>
