@@ -7,7 +7,6 @@ $name = '';
 $description = '';
 $recid = 0;
 
-
 if (isset($_POST['bank_name'])) {
     $name = $_POST['bank_name'];
 }
@@ -18,7 +17,6 @@ if (isset($_POST['description'])) {
 if (isset($_POST['recid'])) {
     $recid = $_POST['recid'];
 }
-
 
 if ($recid <= 0) {
     if ($name != '') {
