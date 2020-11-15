@@ -249,7 +249,7 @@ if ($user) {
                 <span style="font-size: 18px;">Bank Setting</span></a>
         </li>
         <?php endif;?>
-        <?php if (checkPer($user_position,"is_position", $connect)): ?>
+        <?php if (checkPer($user_position,"is_position", $connect) && checkPer($user_position,"is_all", $connect)): ?>
             <li class="nav-item">
                 <a class="nav-link" href="position.php">
                     <i class="fas fa-fw fa-check-circle" style="font-size: 18px;"></i>

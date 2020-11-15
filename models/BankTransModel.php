@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Bangkok');
 
 function transInUpdate($connect, $bank_id , $amount){
     if($bank_id && $amount > 0){

@@ -154,7 +154,7 @@ if(isset($_SESSION['msg-error'])){
                                     <div class="custom-control custom-checkbox small">
                                         <input type="checkbox" name="is_position" class="custom-control-input"
                                                id="is_position" onchange="checkboxChange($(this))">
-                                        <label class="custom-control-label" for="is_position">User</label>
+                                        <label class="custom-control-label" for="is_position">position</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
