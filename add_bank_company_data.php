@@ -1,6 +1,7 @@
 <?php
 ob_start();
 session_start();
+date_default_timezone_set('Asia/Bangkok');
 include("common/dbcon.php");
 include("models/BankTransModel.php");
 
@@ -34,7 +35,7 @@ if (isset($_POST['recid'])) {
 }
 
 //echo $adjust_amount;return;
-
+$t_date = date('Y-m-d H:i:s');
 if ($recid <= 0) {
     if ($bank_account != '' && $bank_id != '') {
         $sql = "INSERT INTO bank_account_company (name,bank_account,bank_id)
@@ -43,7 +44,7 @@ if ($recid <= 0) {
         if ($result = $connect->query($sql)) {
             if($adjust_amount > 0){
 
-                createtrans($connect, $bank_id,'Adjustment in',1,$adjust_amount,$user_id);
+                createtrans($connect, $bank_id,'Adjustment in',1,$adjust_amount,$user_id,$t_date);
             }
             $_SESSION['msg-success'] = 'Saved data successfully';
             header('location:bank_company.php');
@@ -59,10 +60,10 @@ if ($recid <= 0) {
 
     if ($result = $connect->query($sql)) {
         if($adjust_amount > 0){
-            createtrans($connect, $recid,'Adjustment in',1,$adjust_amount,$user_id);
+            createtrans($connect, $recid,'Adjustment in',1,$adjust_amount,$user_id,$t_date);
         }else if($adjust_amount < 0){
             //$adjust_amount;return;
-            createtrans($connect, $recid,'Adjustment out',2,$adjust_amount,$user_id);
+            createtrans($connect, $recid,'Adjustment out',2,$adjust_amount,$user_id,$t_date);
         }
 
 

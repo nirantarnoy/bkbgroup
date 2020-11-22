@@ -5,6 +5,7 @@ include("models/PromotionModel.php");
 include("models/BankModel.php");
 
 $total_member = 0;
+$total_skmmember = 0;
 $total_cash_in = 0;
 $total_cash_out = 0;
 $total_net_win = 0;
@@ -37,6 +38,15 @@ $result3 = $statement3->fetchAll();
 
 foreach ($result3 as $row3) {
     $total_promotion_get = number_format($row3['cnt'], 0);
+}
+
+$query4 = "SELECT COUNT(*) as cnt FROM member WHERE member_type='SKM'";
+$statement4 = $connect->prepare($query4);
+$statement4->execute();
+$result4 = $statement4->fetchAll();
+
+foreach ($result4 as $row4) {
+    $total_skmmember = number_format($row4['cnt'], 0);
 }
 
 

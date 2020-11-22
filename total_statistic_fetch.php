@@ -18,6 +18,7 @@ $f_date = null;
 $t_date = null;
 
 $promotion_id = 0;
+$member_type = 0;
 
 if (isset($_POST['from_date'])) {
     $from_date = $_POST['from_date'];
@@ -28,6 +29,10 @@ if (isset($_POST['to_date'])) {
 
 if (isset($_POST['promotion_id'])) {
     $promotion_id = $_POST['promotion_id'];
+}
+
+if (isset($_POST['member_group_id'])) {
+    $member_type = $_POST['member_group_id'];
 }
 
 if($from_date != '' && $to_date !=''){
@@ -58,15 +63,42 @@ if($from_date != '' && $to_date !=''){
 //    $query .= " AND (trans_date >='$f_date' AND trans_date <='$t_date') ";
 //}
 //$query.= " GROUP BY member_id";
-$query = "SELECT SUM(cash_in) as cash_in,SUM(cash_out) as cash_out, SUM(net_win) as net_win FROM member_account WHERE id > 0";
-if($promotion_id  > 0)
-{
-    $query.= " AND promotion_id='$promotion_id'";
+
+$query = '';
+if($member_type == 0){
+    $query = "SELECT SUM(cash_in) as cash_in,SUM(cash_out) as cash_out, SUM(net_win) as net_win FROM member_account WHERE id > 0";
+    if($promotion_id  > 0)
+    {
+        $query.= " AND promotion_id='$promotion_id'";
+    }
+    if($f_date != '' && $t_date != '')
+    {
+        $query.= " AND (trans_date >= '$f_date' AND trans_date <='$t_date')";
+    }
 }
-if($f_date != '' && $t_date != '')
-{
-    $query.= " AND (trans_date >= '$f_date' AND trans_date <='$t_date')";
+if($member_type == 1){
+    $query = "SELECT SUM(member_account.cash_in) as cash_in,SUM(member_account.cash_out) as cash_out, SUM(member_account.net_win) as net_win FROM member_account INNER JOIN member ON member_account.member_id=member.id WHERE member_account.id > 0 AND member.member_type is null";
+    if($promotion_id  > 0)
+    {
+        $query.= " AND member_account.promotion_id='$promotion_id'";
+    }
+    if($f_date != '' && $t_date != '')
+    {
+        $query.= " AND (member_account.trans_date >= '$f_date' AND member_account.trans_date <='$t_date')";
+    }
 }
+if($member_type == 2){
+    $query = "SELECT SUM(member_account.cash_in) as cash_in,SUM(member_account.cash_out) as cash_out, SUM(member_account.net_win) as net_win FROM member_account INNER JOIN member ON member_account.member_id=member.id WHERE member_account.id > 0 AND member.member_type = 'SKM'";
+    if($promotion_id  > 0)
+    {
+        $query.= " AND member_account.promotion_id='$promotion_id'";
+    }
+    if($f_date != '' && $t_date != '')
+    {
+        $query.= " AND (member_account.trans_date >= '$f_date' AND member_account.trans_date <='$t_date')";
+    }
+}
+
 
 //$query.= " GROUP BY member_id";
 $statement = $connect->prepare($query);

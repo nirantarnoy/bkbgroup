@@ -221,6 +221,13 @@ if ($user) {
                     <span class="menu-text" style="font-size: 20px;">Members</span></a>
             </li>
         <?php endif;?>
+        <?php if (checkPer($user_position,"is_member", $connect)): ?>
+            <li class="nav-item">
+                <a class="nav-link" href="skmmember.php">
+                    <i class="fas fa-fw fa-user" style="font-size: 18px;"></i>
+                    <span class="menu-text" style="font-size: 20px;">SKM Members</span></a>
+            </li>
+        <?php endif;?>
         <?php if (checkPer($user_position,"is_accounting", $connect)): ?>
         <li class="nav-item">
             <a class="nav-link" href="memberaccounting.php">

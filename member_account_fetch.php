@@ -10,7 +10,7 @@ include("models/BankModel.php");
 
 
 $query_filter = '';
-$query = "SELECT member.id,member_account.member_id,member.name,member.phone,member.account_id,member.id_number,member.bank_id,member.bank_account,member.active_date,SUM(member_account.cash_in) as cash_in ,SUM(member_account.cash_out) as cash_out, SUM(member_account.net_win) as net_win FROM member LEFT OUTER JOIN member_account ON member_account.member_id=member.id WHERE member.id > 0 ";
+$query = "SELECT member.id,member.member_type,member_account.member_id,member.name,member.phone,member.account_id,member.id_number,member.bank_id,member.bank_account,member.active_date,SUM(member_account.cash_in) as cash_in ,SUM(member_account.cash_out) as cash_out, SUM(member_account.net_win) as net_win FROM member LEFT OUTER JOIN member_account ON member_account.member_id=member.id WHERE member.id > 0 ";
 //if(isset($_POST["region_name"])){
 //    $query .= 'region_name LIKE "%'.$_POST["region_name"].'%" AND ';
 //}
@@ -22,25 +22,29 @@ $query = "SELECT member.id,member_account.member_id,member.name,member.phone,mem
 //}
 
 
-if(isset($_POST["search"]["value"]))
-{
-    $query .= ' AND (name LIKE "%'.$_POST["search"]["value"].'%"';
-    $query .= 'OR phone LIKE "%'.$_POST["search"]["value"].'%" ';
-    $query .= 'OR account_id LIKE "%'.$_POST["search"]["value"].'%" ';
-    $query .= 'OR id_number LIKE "%'.$_POST["search"]["value"].'%") ';
+//if(isset($_POST["search"]["value"]))
+//{
+//    $query .= ' AND (name LIKE "%'.$_POST["search"]["value"].'%"';
+//    $query .= 'OR phone LIKE "%'.$_POST["search"]["value"].'%" ';
+//    $query .= 'OR account_id LIKE "%'.$_POST["search"]["value"].'%" ';
+//    $query .= 'OR id_number LIKE "%'.$_POST["search"]["value"].'%") ';
+//}
+
+
+if (isset($_POST["searchByText"])) {
+    $query .= ' AND (name LIKE "%'.$_POST["searchByText"].'%"';
+    $query .= 'OR phone LIKE "%'.$_POST["searchByText"].'%" ';
+    $query .= 'OR account_id LIKE "%'.$_POST["searchByText"].'%" ';
+    $query .= 'OR id_number LIKE "%'.$_POST["searchByText"].'%") ';
 }
-
-
-//if (isset($_POST["searchByText"])) {
-//    $query .= '(name LIKE "%' . $_POST["searchByText"] . '%"';
-//    $query .= 'OR phone LIKE "%' . $_POST["searchByText"] . '%" ';
-//    $query .= 'OR account_id LIKE "%' . $_POST["searchByText"] . '%" ';
-//    $query .= 'OR id_number LIKE "%' . $_POST["searchByText"] . '%") ';
-//}
-//if (isset($_POST["searchByPromotion"]) && $_POST["searchByPromotion"] > 0 ) {
-//    $query .= ' AND member_account.promotion_id = ' . $_POST["searchByPromotion"] . '';
-//
-//}
+if (isset($_POST["searchByMemberType"])) {
+    if($_POST["searchByMemberType"] == 1){
+        $query .= ' AND member_type is null';
+    }
+    if($_POST["searchByMemberType"] == 2){
+        $query .= ' AND member_type ="SKM"';
+    }
+}
 //if (isset($_POST["searchByFromdate"]) && isset($_POST["searchByTodate"])) {
 //    if ($_POST["searchByFromdate"] != null && $_POST["searchByTodate"] != null) {
 //        $from_date = explode('/', $_POST["searchByFromdate"]);

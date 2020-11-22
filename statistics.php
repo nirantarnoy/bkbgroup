@@ -32,6 +32,8 @@ if (isset($_SESSION['msg-error'])) {
     unset($_SESSION['msg-error']);
 }
 
+$member_group_data = [['id'=>1,'name'=>'MEMBER'],['id'=>2,'name'=>'SKM']];
+
 ?>
 <input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
 <input type="hidden" class="msg-error" value="<?= $noti_error ?>">
@@ -52,7 +54,7 @@ if (isset($_SESSION['msg-error'])) {
         <hr>
 
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-3">
                         <label for="">From Date</label>
@@ -61,6 +63,16 @@ if (isset($_SESSION['msg-error'])) {
                     <div class="col-lg-3">
                         <label for="">To Date</label>
                         <input type="text" class="form-control to-date" name="to_date" value="" autocomplete="off" placeholder="DD/MM/YYYY" required>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="">Group</label>
+                        <select name="member_group_id" id="member-group-id" class="form-control member-group-id"
+                                style="margin-left: 5px;">
+                            <option value="0">--Select Group--</option>
+                            <?php for ($i = 0; $i <= count($member_group_data) - 1; $i++): ?>
+                                <option value="<?= $member_group_data[$i]['id'] ?>"><?= $member_group_data[$i]['name'] ?></option>
+                            <?php endfor; ?>
+                        </select>
                     </div>
                     <div class="col-lg-3">
                         <label for="">Promotion</label>
@@ -72,7 +84,7 @@ if (isset($_SESSION['msg-error'])) {
                             <?php endfor; ?>
                         </select>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-1">
                         <label for="" style="color: white">ok</label><br />
                         <div class="btn btn-info btn-search">Search</div>
                     </div>
@@ -80,48 +92,16 @@ if (isset($_SESSION['msg-error'])) {
                 <br />
                 <div class="row">
                     <div class="col-lg-3"><h5>Cash In</h5></div>
-                    <div class="col-lg-6"><input type="text" class="form-control cash-in" readonly value="0"></div>
+                    <div class="col-lg-4"><input type="text" class="form-control cash-in" readonly value="0"></div>
                 </div><div style="height: 2px;"></div>
                 <div class="row">
                     <div class="col-lg-3"><h5>Cash Out</h5></div>
-                    <div class="col-lg-6"><input type="text" class="form-control cash-out" readonly value="0"></div>
+                    <div class="col-lg-4"><input type="text" class="form-control cash-out" readonly value="0"></div>
                 </div><div style="height: 2px;"></div>
                 <div class="row">
                     <div class="col-lg-3"><h5>Net Win</h5></div>
-                    <div class="col-lg-6"><input type="text" class="form-control net-win" readonly value="0"></div>
+                    <div class="col-lg-4"><input type="text" class="form-control net-win" readonly value="0"></div>
                 </div>
-            </div>
-            <div class="col-lg-6">
-<!--                <div class="row">-->
-<!--                    <div class="col-lg-12 text-center">-->
-<!--                         <h4>My bank account</h4>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <br />-->
-<!--                <div class="row">-->
-<!--                    <div class="col-lg-6">-->
-<!--                        <label for="">Bank Name</label>-->
-<!--                        <select name="bank_id" id="" class="form-control bank-top-id" required>-->
-<!--                            <option value="0">--Select Bank name--</option>-->
-                            <?php //for ($i = 0; $i <= count($bank_data) - 1; $i++): ?>
-<!--                                <option value="--><?php ////echo $bank_data[$i]['id'] ?><!--">--><?php ////echo $bank_data[$i]['name'] ?><!--</option>-->
-                            <?php //endfor; ?>
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                    <div class="col-lg-6">-->
-<!--                        <label for="">Balance</label>-->
-<!--                        <input type="text" class="form-control txt-top-balance" value="0" readonly>-->
-<!--                    </div>-->
-<!--                </div>-->
-                <br />
-<!--                <div class="row">-->
-<!--                    <div class="col-lg-4"></div>-->
-<!--                    <div class="col-lg-4">-->
-<!--                        <div class="btn btn-primary btn-top-show-all">Show all account</div>-->
-<!--                    </div>-->
-<!--                    <div class="col-lg-4"></div>-->
-<!--                </div>-->
-                <br />
             </div>
         </div>
     </div>
@@ -140,32 +120,37 @@ if (isset($_SESSION['msg-error'])) {
         <div class="row">
             <div class="col-lg-6">
                 <div class="row">
-                    <div class="col-lg-3"><h5>Total Members</h5></div>
+                    <div class="col-lg-4"><h5>Total Members</h5></div>
                     <div class="col-lg-6"><input type="text" class="form-control" readonly value="<?=$total_member?>"></div>
                 </div>
                 <div style="height: 2px;"></div>
                 <div class="row">
-                    <div class="col-lg-3"><h5>Cash In</h5></div>
+                    <div class="col-lg-4"><h5>SKM Total Members</h5></div>
+                    <div class="col-lg-6"><input type="text" class="form-control" readonly value="<?=$total_skmmember?>"></div>
+                </div>
+                <div style="height: 2px;"></div>
+                <div class="row">
+                    <div class="col-lg-4"><h5>Cash In</h5></div>
                     <div class="col-lg-6"><input type="text" class="form-control" readonly value="<?=$total_cash_in?>"></div>
                 </div>
                 <div style="height: 2px;"></div>
                 <div class="row">
-                    <div class="col-lg-3"><h5>Cash Out</h5></div>
+                    <div class="col-lg-4"><h5>Cash Out</h5></div>
                     <div class="col-lg-6"><input type="text" class="form-control" readonly value="<?=$total_cash_out?>"></div>
                 </div>
                 <div style="height: 2px;"></div>
                 <div class="row">
-                    <div class="col-lg-3"><h5>Net Win</h5></div>
+                    <div class="col-lg-4"><h5>Net Win</h5></div>
                     <div class="col-lg-6"><input type="text" class="form-control" readonly value="<?=$total_net_win?>"></div>
                 </div>
                 <div style="height: 2px;"></div>
                 <div class="row">
-                    <div class="col-lg-3"><h5>Promotion Get</h5></div>
+                    <div class="col-lg-4"><h5>Promotion Get</h5></div>
                     <div class="col-lg-6"> <input type="text" class="form-control" readonly value="<?=$total_promotion_get?>"></div>
                 </div>
                 <div style="height: 2px;"></div>
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <select name="promotion_id" id="promotion-bottom" class="form-control promotion-bottom"
                                 style="margin-left: 5px;">
                             <option value="0">--Select Promotion--</option>
@@ -177,7 +162,7 @@ if (isset($_SESSION['msg-error'])) {
                     <div class="col-lg-6"> <input type="text" class="form-control txt-filter-get" readonly value="<?=$total_promotion_get?>"></div>
                 </div>
             </div>
-            <div class="col-lg-6" style="border-left: 1px dashed gray">
+            <div class="col-lg-5" style="border-left: 1px dashed gray">
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <h4>My bank account</h4>
@@ -201,11 +186,11 @@ if (isset($_SESSION['msg-error'])) {
                 </div>
                 <br />
                 <div class="row">
-                    <div class="col-lg-4"></div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-6" style="text-align: center">
                         <div class="btn btn-primary btn-bottom-show-all">Show all account</div>
                     </div>
-                    <div class="col-lg-4"></div>
+                    <div class="col-lg-3"></div>
                 </div>
                 <br />
             </div>
@@ -340,6 +325,7 @@ include "footer.php";
     $(".btn-search").click(function(){
         var f_date = $(".from-date").val();
         var t_date = $(".to-date").val();
+        var member_type = $(".member-group-id").val();
         var promotion = $(".promotion-id").val();
 
         //if(f_date != '' && t_date != ''){
@@ -349,7 +335,7 @@ include "footer.php";
                 'dataType': 'json',
                 'async': false,
                 'url': 'total_statistic_fetch.php',
-                'data': {'from_date': f_date, 'to_date': t_date, 'promotion_id': promotion},
+                'data': {'from_date': f_date, 'to_date': t_date, 'promotion_id': promotion,'member_group_id': member_type },
                 'success': function (data) {
                    if(data.length > 0){
                        $(".cash-in").val(data[0]['total_cash_in']);

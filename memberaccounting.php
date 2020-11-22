@@ -38,6 +38,7 @@ if (isset($_SESSION['msg-error'])) {
     $noti_error = $_SESSION['msg-error'];
     unset($_SESSION['msg-error']);
 }
+$member_group_data = [['id'=>1,'name'=>'MEMBER'],['id'=>2,'name'=>'SKM']];
 ?>
 <input type="hidden" class="msg-ok" value="<?= $noti_ok ?>">
 <input type="hidden" class="msg-error" value="<?= $noti_error ?>">
@@ -59,6 +60,25 @@ if (isset($_SESSION['msg-error'])) {
         <form action="delete_member.php" id="form-delete" method="post" enctype="multipart/form-data">
             <input type="hidden" name="delete_id" class="delete-id" value="">
         </form>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="input-group">
+                    <select name="member_group_id" id="member-group-id-search" class="form-control member-group-id-search"
+                            style="margin-left: 5px;">
+                        <option value="0">--Select Group--</option>
+                        <?php for ($i = 0; $i <= count($member_group_data) - 1; $i++): ?>
+                            <option value="<?= $member_group_data[$i]['id'] ?>"><?= $member_group_data[$i]['name'] ?></option>
+                        <?php endfor; ?>
+                    </select>
+                    <input type="text" class="form-control search-text" id="search-text" name="search_text"
+                           placeholder="Search">
+                    <!--                    <button class="btn btn-primary">Search</button>-->
+                    <!--                    <input type="text" class="form-control search-index" id="search-index" name="search_index" placeholder="index">-->
+                    <!--                    <input type="text" class="form-control search-plate" id="search-prod" name="search_prod" placeholder="สินค้า">-->
+                </div>
+            </div>
+        </div>
+        <br />
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -334,6 +354,13 @@ if (isset($_SESSION['msg-error'])) {
                             <input type="text" class="form-control report-from-date" value="" placeholder="From Date">
                             <input type="text" class="form-control report-to-date" value="" style="margin-left: 5px;"
                                    placeholder="To Date">
+                            <select name="member_group_id" id="member-group-id" class="form-control member-group-id"
+                                    style="margin-left: 5px;">
+                                <option value="0">--Select Group--</option>
+                                <?php for ($i = 0; $i <= count($member_group_data) - 1; $i++): ?>
+                                    <option value="<?= $member_group_data[$i]['id'] ?>"><?= $member_group_data[$i]['name'] ?></option>
+                                <?php endfor; ?>
+                            </select>
                             <select name="" id="report-find-promotion" class="form-control report-find-promotion"
                                     style="margin-left: 5px;">
                                 <option value="0">--Select Promotion--</option>
@@ -666,16 +693,17 @@ include "footer.php";
 
     $(".btn-find-report").click(function () {
         var promotion = $(".report-find-promotion").val();
+        var member_type = $(".member-group-id").val();
         var f_date = $(".report-from-date").val();
         var t_date = $(".report-to-date").val();
-
+//alert(member_type);
         if (promotion != null) {
             $.ajax({
                 'type': 'post',
                 'dataType': 'html',
                 'async': false,
                 'url': 'get_account_report.php',
-                'data': {'promotion_id': promotion, 'from_date': f_date, 'to_date': t_date},
+                'data': {'promotion_id': promotion, 'from_date': f_date, 'to_date': t_date,'member_group_id': member_type},
                 'success': function (data) {
                     if (data != '') {
                         $(".table-report tbody").html(data);
@@ -906,17 +934,40 @@ include "footer.php";
     }
 
     $("#dataTable").append('<tfoot><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th style="text-align: right"></th><th></th><th></th><th></th></tfoot>');
-    $("#dataTable").dataTable({
+    var dataTablex = $("#dataTable").DataTable({
         "processing": true,
         "serverSide": true,
         "order": [[1, "desc"]],
         "pageLength": 10,
+        "filter": false,
         //"order": [],
         //"aaSorting": [[ 8, "desc" ]],
         "ajax": {
             url: "member_account_fetch.php",
-            type: "POST"
+            type: "POST",
+                    data: function (data) {
+                        // Read values
+                        var search_text = $('#search-text').val();
+                        var member_type = $('#member-group-id-search').val();
+                        // var index = $('#search-index').val();
+                        // // Append to data
+                        data.searchByText = search_text;
+                        data.searchByMemberType = member_type;
+                        // data.searchByIndex = index;
+                    }
         },
+        // initComplete: function () {
+        //     this.api().columns().every(function () {
+        //         var column = this;
+        //         var select = $('<select><option value=""></option></select>')
+        //             .appendTo($(column.header()).empty())
+        //             .on('change', function () {
+        //                 var val = $.fn.dataTable.util.escapeRegex(
+        //                     $(this).val()
+        //                 );
+        //             });
+        //     });
+        // },
         "columnDefs": [
             {
                 "targets": [0],
@@ -1022,9 +1073,9 @@ include "footer.php";
     //
     // });
     //
-    // $("#search-text").change(function(){
-    //     dataTablex.draw();
-    // });
+    $("#search-text").change(function(){
+        dataTablex.draw();
+    });
     // $("#search-from-date").change(function(){
     //     //alert($(this).val());
     //     dataTablex.draw();
@@ -1032,9 +1083,9 @@ include "footer.php";
     // $("#search-to-date").change(function(){
     //     dataTablex.draw();
     // });
-    // $("#find-promotion-search").change(function(){
-    //     dataTablex.draw();
-    // });
+    $("#member-group-id-search").change(function(){
+        dataTablex.draw();
+    });
 
     function showmanage(e) {
         var recid = e.attr("data-id");

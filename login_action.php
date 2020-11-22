@@ -1,5 +1,9 @@
 <?php
 ob_start();
+
+session_cache_expire(1440);
+$cache_expire = session_cache_expire();
+
 session_start();
 date_default_timezone_set('Asia/Yangon');
 include("common/dbcon.php");

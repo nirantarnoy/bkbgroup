@@ -75,7 +75,7 @@ if ($recid <= 0 && $list != '' && $user_id) {
            VALUES ('$t_date','$list','$qty','$price','$total','$cashier_name',1,'$x_date','$bank_id','$currency_id')";
 
     if ($result = $connect->query($sql)) {
-        createtrans($connect, $bank_id,'capital',2,$total,$user_id);
+        createtrans($connect, $bank_id,'capital',2,$total,$user_id, $t_date);
        // transInUpdate($connect, $bank_id, 100);
        // echo "ok";return;
         $_SESSION['msg-success'] = 'Saved data successfully';
