@@ -18,7 +18,7 @@ if (isset($_POST['id'])) {
 $query_filter = '';
 $query = "SELECT * FROM bank_trans WHERE ";
 if(isset($_POST["searchId"])){
-    $query .= 'bank_id ='.$_POST["searchId"].'';
+    $query .= 'member_id ='.$_POST["searchId"].'';
 }
 //if(isset($_POST["type_name"])){
 //    $query .= 'proj_type LIKE "%'.$_POST["type_name"].'%" AND ';
@@ -61,9 +61,7 @@ foreach ($result as $row) {
     $sub_array = array();
     $sub_array[] = '<p style="text-align: center">' . $i . '</p>';
     $sub_array[] = '<p style="font-weight: ;text-align: left">' . $row['trans_date'] . '</p>';
-    $sub_array[] = '<a href="#" data-var="'.$row['member_id'].'" data-id="'.$member_data_id.'" onclick="showmembertrans($(this))" style="font-weight: ;text-align: left">' . $member_data_id . '</a>';
     $sub_array[] = '<p style="font-weight: ;text-align: left;color: ' .$activity_color.'">' . $row['activity'] . '</p>';
-    $sub_array[] = '<p style="font-weight: ;text-align: left">' . getDisplayname($row['user_id'], $connect) . '</p>';
     $sub_array[] = $row['amount'];
 //    $sub_array[] = $row['amount'];
 //    $sub_array[] = '<div class="btn btn-secondary" data-id="'.$row['id'].'" onclick="showupdate($(this))"><i class="fas fa-edit"></i> Edit</div><span> </span><div class="btn btn-danger" data-id="'.$row['id'].'" onclick="recDelete($(this))"><i class="fas fa-trash-alt"></i> Delete</div>';

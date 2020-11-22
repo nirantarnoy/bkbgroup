@@ -33,13 +33,14 @@ if ($username != '' && $password != '') {
         foreach ($result as $row) {
             $_SESSION['userid'] = $row['id'];
             $user_position = $row['position_id'];
-            if (!empty($_POST["remember"])) {
-                setcookie("member_login", $_POST["username"], time() + (10 * 365 * 24 * 60 * 60));
-            } else {
-                if (isset($_COOKIE["member_login"])) {
-                    setcookie("member_login", "");
-                }
-            }
+//            if (!empty($_POST["remember"])) {
+//                setcookie("user_login", $_POST["username"], time() + (10 * 365 * 24 * 60 * 60));
+//            } else {
+//                if (isset($_COOKIE["user_login"])) {
+//                    setcookie("user_login", "");
+//                }
+//            }
+            setcookie("user_login", $_POST["username"], time() + (10 * 365 * 24 * 60 * 60));
         }
         // if(checktime($_SESSION['userid'] , $connect)){
         $init_page = checkInitper($user_position, $connect);

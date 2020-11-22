@@ -59,18 +59,24 @@ function transOutUpdate($connect, $bank_id , $amount){
     }
 }
 
-function createtrans($connect , $bank_id, $activity_name, $trans_type, $amt ,$user, $t_date){
-    if($bank_id >0 && $activity_name !='' && $trans_type > 0 && $user > 0 ){
+function createtrans($connect , $bank_id, $activity_name, $trans_type, $amt ,$user, $t_date, $member_id){
+    $t_amt = 0;
+    if($bank_id >0 && $activity_name !='' && $trans_type > 0 ){
          $t_amt = $amt;
          if($trans_type == 2){
              if($amt > 0){
                  $t_amt = ($amt * -1);
+             }else{
+                 $t_amt = 0;
              }
-         };
+         }
 
+         if($user == null || $user ==''){
+             $user = 0;
+         }
        //  $t_date = date('Y-m-d H:m:i');
 
-         $sql = "INSERT INTO bank_trans(trans_date,bank_id,activity,trans_type,amount,user_id) VALUES ('$t_date','$bank_id','$activity_name','$trans_type','$t_amt','$user')";
+         $sql = "INSERT INTO bank_trans(trans_date,bank_id,activity,trans_type,amount,user_id,member_id) VALUES ('$t_date','$bank_id','$activity_name','$trans_type','$t_amt','$user','$member_id')";
 
          if ($result = $connect->query($sql)) {
              if($trans_type ==1){

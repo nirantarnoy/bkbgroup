@@ -156,10 +156,45 @@ if(isset($_SESSION['msg-error'])){
                                 <tr>
                                     <th>#</th>
                                     <th>Date</th>
+                                    <th>Id member</th>
                                     <th>Action</th>
                                     <th>User</th>
                                     <th>Amount</th>
 <!--                                    <th>Balance</th>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="membertransModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="color: #1c606a">Member transaction <span style="color: red" class="member-id-display"></span></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <input type="hidden" class="member-history-id" value="0">
+                            <table class="table table-bordered" id="membertransdataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                    <th>Amount</th>
+                                    <!--                                    <th>Balance</th>-->
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -205,7 +240,7 @@ include "footer.php";
 
         ],
     });
-    $("#historydataTable").append('<tfoot><th></th><th></th><th></th><th></th><th style="text-align: right"></th></tfoot>');
+    $("#historydataTable").append('<tfoot><th></th><th></th><th></th><th></th><th></th><th style="text-align: right"></th></tfoot>');
     var historydataTable = $("#historydataTable").DataTable({
         "processing": true,
         "serverSide": true,
@@ -224,7 +259,7 @@ include "footer.php";
                 "orderable": false,
             },
             {
-                targets: [4],
+                targets: [5],
                 className: 'text-right'
             },
         ],
@@ -238,7 +273,7 @@ include "footer.php";
                         i : 0;
             };
             var total = api
-                .column(4)
+                .column(5)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -250,10 +285,70 @@ include "footer.php";
 
             // Update footer
             // var numFormat = $.fn.dataTable.render.number( '\,', '.', 2, '£' ).display;
-            $( api.column(3).footer() ).html('<p style="text-align: right">Total</p>');
-            $( api.column(4).footer() ).html(all_total);
+            $( api.column(4).footer() ).html('<p style="text-align: right">Total</p>');
+            $( api.column(5).footer() ).html(all_total);
         }
     });
+
+    $("#membertransdataTable").append('<tfoot><th></th><th></th><th></th><th style="text-align: right"></th></tfoot>');
+    var membertransdataTable = $("#membertransdataTable").DataTable({
+        "processing": true,
+        "serverSide": true,
+        "order": [[1, "asc"]],
+        "pageLength": 100,
+        "ajax": {
+            url: "member_trans_fetch.php",
+            type: "POST",
+            data: function (data) {
+                data.searchId = $('.member-history-id').val();
+            }
+        },
+        "columnDefs": [
+            {
+                "targets": [0],
+                "orderable": false,
+            },
+            {
+                targets: [3],
+                className: 'text-right'
+            },
+        ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            // converting to interger to find total
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            var total = api
+                .column(3)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                    //return a + a;
+                }, 0 );
+            var all_total = addCommas(parseFloat(total));
+            // data = api.column(3, { page: 'current'} ).data();
+            // pageTotal = data.length ? data.reduce( function (a, b) { return intVal(a) + intVal(b); } ) : 0;
+
+            // Update footer
+            // var numFormat = $.fn.dataTable.render.number( '\,', '.', 2, '£' ).display;
+            $( api.column(2).footer() ).html('<p style="text-align: right">Total</p>');
+            $( api.column(3).footer() ).html(all_total);
+        }
+    });
+    function showmembertrans(e){
+        var member_id = e.attr('data-var');
+        var id_number = e.attr('data-id');
+        if(member_id > 0){
+            $(".member-history-id").val(member_id);
+            $(".member-id-display").text(id_number);
+            $("#membertransModal").modal("show");
+            membertransdataTable.draw();
+        }
+    }
     function showupdate(e) {
         var recid = e.attr("data-id");
         if (recid != '') {
@@ -321,6 +416,7 @@ include "footer.php";
         }
 
     }
+
     function notify() {
         // $.toast({
         //     title: 'Message Notify',

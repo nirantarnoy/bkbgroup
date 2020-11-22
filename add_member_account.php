@@ -60,12 +60,12 @@ if ($recid <= 0 && $action_type == 'create') {
            VALUES ('$t_date','$member_id','$promotion','$deposit','$withdraw','$net_win','$turnover','$bank_id','$created_at','$userid')";
 
         if ($result = $connect->query($sql)) {
-            if($withdraw >0 ){
-                createtrans($connect, $bank_id,'Member withdraw',2,$withdraw,$userid, $t_date);
+            if($withdraw > 0 ){
+                createtrans($connect, $bank_id,'Member withdraw',2, $withdraw,$userid, $t_date, $member_id);
                // transOutUpdate($connect, $bank_id, $withdraw);
             }
             if($deposit > 0){
-                createtrans($connect, $bank_id,'Member deposit',1,$deposit,$userid, $t_date);
+                createtrans($connect, $bank_id,'Member deposit',1, $deposit,$userid, $t_date, $member_id);
                // transInUpdate($connect, $bank_id, $deposit);
             }
             createlogs($connect,$userid,'insert','accounting',getMembername($connect,$member_id));

@@ -49,6 +49,19 @@ function getMemberaccount($connect,$code){
     }
 
 }
+function getMemberidnumber($connect,$code){
+    $query = "SELECT * FROM member WHERE id='$code'";
+    $statement = $connect->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $filtered_rows = $statement->rowCount();
+    if($filtered_rows > 0){
+        foreach($result as $row){
+            return $row['id_number'];
+        }
+    }
+
+}
 function getMembername($connect,$code){
     $query = "SELECT * FROM member WHERE id='$code'";
     $statement = $connect->prepare($query);
