@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2020-11-15 14:18:12
+Date: 2020-11-22 21:11:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -90,7 +90,7 @@ CREATE TABLE `bank_account_company` (
 -- ----------------------------
 -- Records of bank_account_company
 -- ----------------------------
-INSERT INTO `bank_account_company` VALUES ('1', 'XXX', '77895412545', '2', '950', null, null);
+INSERT INTO `bank_account_company` VALUES ('1', 'XXX', '77895412545', '2', '881', null, null);
 
 -- ----------------------------
 -- Table structure for `bank_trans`
@@ -104,34 +104,38 @@ CREATE TABLE `bank_trans` (
   `trans_type` int(11) DEFAULT NULL,
   `amount` float(11,0) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `member_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of bank_trans
 -- ----------------------------
-INSERT INTO `bank_trans` VALUES ('13', '2020-11-06 09:11:35', '1', 'Adjustment out', '2', '-50', '1');
-INSERT INTO `bank_trans` VALUES ('14', '2020-11-06 09:11:39', '1', 'Adjustment in', '1', '90', '1');
-INSERT INTO `bank_trans` VALUES ('15', '2020-11-06 09:11:39', '1', 'Adjustment out', '2', '-90', '1');
-INSERT INTO `bank_trans` VALUES ('16', '2020-11-06 09:11:39', '1', 'Adjustment out', '2', '-240', '1');
-INSERT INTO `bank_trans` VALUES ('17', '2020-11-06 09:11:40', '1', 'Adjustment out', '2', '-240', '1');
-INSERT INTO `bank_trans` VALUES ('18', '2020-11-06 09:11:41', '1', 'Adjustment out', '2', '-480', '1');
-INSERT INTO `bank_trans` VALUES ('19', '2020-11-06 16:11:00', '1', 'Member deposit', '1', '0', '1');
-INSERT INTO `bank_trans` VALUES ('20', '2020-11-06 16:11:06', '1', 'Member deposit', '1', '0', '1');
-INSERT INTO `bank_trans` VALUES ('21', '2020-11-06 16:11:09', '1', 'Member deposit', '1', '0', '1');
-INSERT INTO `bank_trans` VALUES ('22', '2020-11-06 16:11:11', '1', 'Member deposit', '1', '50', '1');
-INSERT INTO `bank_trans` VALUES ('23', '2020-11-06 16:11:11', '1', 'Member withdraw', '2', '-50', '1');
-INSERT INTO `bank_trans` VALUES ('24', '2020-11-06 16:11:12', '1', 'Member withdraw', '2', '-50', '1');
-INSERT INTO `bank_trans` VALUES ('25', '2020-11-06 16:11:13', '1', 'capital', '1', '-240', '1');
-INSERT INTO `bank_trans` VALUES ('26', '2020-11-06 16:11:14', '1', 'capital', '2', '-90', '1');
-INSERT INTO `bank_trans` VALUES ('27', '2020-11-06 10:11:16', '2', 'Delete withdraw member account', '1', '50', '1');
-INSERT INTO `bank_trans` VALUES ('28', '2020-11-06 10:11:18', '1', 'Delete withdraw member account', '1', '50', '1');
-INSERT INTO `bank_trans` VALUES ('29', '2020-11-06 16:11:18', '1', 'Member deposit', '1', '90', '1');
-INSERT INTO `bank_trans` VALUES ('30', '2020-11-06 10:11:19', '1', 'Delete capital', '2', '-90', '1');
-INSERT INTO `bank_trans` VALUES ('31', '2020-11-06 10:11:20', '1', 'Delete capital', '1', '-240', '1');
-INSERT INTO `bank_trans` VALUES ('32', '2020-11-06 16:11:21', '1', 'capital', '2', '-10', '1');
-INSERT INTO `bank_trans` VALUES ('33', '2020-11-06 10:11:21', '1', 'Delete capital', '1', '10', '1');
-INSERT INTO `bank_trans` VALUES ('34', '2020-11-10 21:11:19', '1', 'Member deposit', '1', '40', '1');
+INSERT INTO `bank_trans` VALUES ('13', '2020-11-06 09:11:35', '1', 'Adjustment out', '2', '-50', '1', null);
+INSERT INTO `bank_trans` VALUES ('14', '2020-11-06 09:11:39', '1', 'Adjustment in', '1', '90', '1', null);
+INSERT INTO `bank_trans` VALUES ('15', '2020-11-06 09:11:39', '1', 'Adjustment out', '2', '-90', '1', null);
+INSERT INTO `bank_trans` VALUES ('16', '2020-11-06 09:11:39', '1', 'Adjustment out', '2', '-240', '1', null);
+INSERT INTO `bank_trans` VALUES ('17', '2020-11-06 09:11:40', '1', 'Adjustment out', '2', '-240', '1', null);
+INSERT INTO `bank_trans` VALUES ('18', '2020-11-06 09:11:41', '1', 'Adjustment out', '2', '-480', '1', null);
+INSERT INTO `bank_trans` VALUES ('19', '2020-11-06 16:11:00', '1', 'Member deposit', '1', '0', '1', null);
+INSERT INTO `bank_trans` VALUES ('20', '2020-11-06 16:11:06', '1', 'Member deposit', '1', '0', '1', null);
+INSERT INTO `bank_trans` VALUES ('21', '2020-11-06 16:11:09', '1', 'Member deposit', '1', '0', '1', null);
+INSERT INTO `bank_trans` VALUES ('22', '2020-11-06 16:11:11', '1', 'Member deposit', '1', '50', '1', null);
+INSERT INTO `bank_trans` VALUES ('23', '2020-11-06 16:11:11', '1', 'Member withdraw', '2', '-50', '1', null);
+INSERT INTO `bank_trans` VALUES ('24', '2020-11-06 16:11:12', '1', 'Member withdraw', '2', '-50', '1', null);
+INSERT INTO `bank_trans` VALUES ('25', '2020-11-06 16:11:13', '1', 'capital', '1', '-240', '1', null);
+INSERT INTO `bank_trans` VALUES ('26', '2020-11-06 16:11:14', '1', 'capital', '2', '-90', '1', null);
+INSERT INTO `bank_trans` VALUES ('27', '2020-11-06 10:11:16', '2', 'Delete withdraw member account', '1', '50', '1', null);
+INSERT INTO `bank_trans` VALUES ('28', '2020-11-06 10:11:18', '1', 'Delete withdraw member account', '1', '50', '1', null);
+INSERT INTO `bank_trans` VALUES ('29', '2020-11-06 16:11:18', '1', 'Member deposit', '1', '90', '1', null);
+INSERT INTO `bank_trans` VALUES ('30', '2020-11-06 10:11:19', '1', 'Delete capital', '2', '-90', '1', null);
+INSERT INTO `bank_trans` VALUES ('31', '2020-11-06 10:11:20', '1', 'Delete capital', '1', '-240', '1', null);
+INSERT INTO `bank_trans` VALUES ('32', '2020-11-06 16:11:21', '1', 'capital', '2', '-10', '1', null);
+INSERT INTO `bank_trans` VALUES ('33', '2020-11-06 10:11:21', '1', 'Delete capital', '1', '10', '1', null);
+INSERT INTO `bank_trans` VALUES ('34', '2020-11-10 21:11:19', '1', 'Member deposit', '1', '40', '1', null);
+INSERT INTO `bank_trans` VALUES ('35', '2020-11-21 12:48:30', '1', 'capital', '2', '-69', '1', null);
+INSERT INTO `bank_trans` VALUES ('36', '2020-11-21 12:57:30', '1', 'Member deposit', '1', '9', '1', null);
+INSERT INTO `bank_trans` VALUES ('37', '2020-11-21 12:58:34', '1', 'Member withdraw', '2', '-9', '1', null);
 
 -- ----------------------------
 -- Table structure for `capital`
@@ -150,14 +154,12 @@ CREATE TABLE `capital` (
   `currency_id` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of capital
 -- ----------------------------
-INSERT INTO `capital` VALUES ('8', '2020-10-14 10:07:10', 'ไก่ทอด', '80', '20', '1600', '2020-10-14 00:00:00', 'niran', '2', '1', '1');
-INSERT INTO `capital` VALUES ('9', '2020-11-01 15:37:54', 'xxx', '500', '12', '6000', '2020-11-06 00:00:00', 'ทดสอบ นะครับ', '2', '1', '1');
-INSERT INTO `capital` VALUES ('10', '2020-11-01 15:47:32', 'ไก่ทอด', '10', '69', '690', '2020-11-07 00:00:00', 'niran', '1', '1', '1');
+INSERT INTO `capital` VALUES ('11', '2020-11-21 12:48:30', 'ไก่ทอด', '1', '69', '-69', '2020-11-21 00:00:00', 'ทดสอบ นะครับ', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for `member`
@@ -175,6 +177,7 @@ CREATE TABLE `member` (
   `is_level2` int(1) DEFAULT NULL,
   `id_card_photo` varchar(255) DEFAULT NULL,
   `bank_photo` varchar(255) DEFAULT NULL,
+  `member_type` varchar(50) DEFAULT NULL,
   `status` int(1) DEFAULT NULL,
   `active_date` datetime DEFAULT NULL,
   `created_at` int(11) DEFAULT NULL,
@@ -182,19 +185,20 @@ CREATE TABLE `member` (
   `updated_at` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of member
 -- ----------------------------
-INSERT INTO `member` VALUES ('1', 'Forex01', 'fdfdxx', '2020-05-01 00:00:00', '09877636727', '2', '66666666660', '066669', '1', '1603295734.jpg', '', '1', '2020-10-11 13:49:03', null, null, null, null);
-INSERT INTO `member` VALUES ('2', 'Forex001', 'นิรันดร์ วังญาติ', '2020-10-22 00:00:00', '0860063601', '2', '3455555', '323232', '1', '1603346979.jpg', '', '1', '2020-10-21 13:49:06', null, null, null, null);
-INSERT INTO `member` VALUES ('4', 'Forex002', 'Ax2010', '1970-01-01 00:00:00', '0888898765', '2', '7789541254', '100100', '1', '', 'aHR0cHM6Ly9zLmlzYW5vb2suY29tL3RyLzAvdWQvMjgzLzE0MTkwMDkvMTQxOTAwOS0yMDIwMDExNDA5NDk0MC04YjMwMmU0LmpwZw==.jpg', '1', '2020-10-13 13:49:09', null, null, null, null);
-INSERT INTO `member` VALUES ('5', 'TEST02', 'TEST02', '1970-01-01 00:00:00', '+66.8600636', '2', '3434343434343', '6666', '0', '', '', '1', '2020-10-13 21:10:35', null, null, null, null);
-INSERT INTO `member` VALUES ('7', 'fdfd', 'santi99', '2020-12-19 00:00:00', 'fdfd', '2', 'fdfdfffdfd', '0', '0', '', '', '1', '2020-10-14 09:02:48', null, null, null, null);
-INSERT INTO `member` VALUES ('9', 'ZXX', 'dfdfd', '2020-10-02 00:00:00', '4555555', '2', '3233333', '323232323', '1', '', '', '1', '2020-10-26 09:22:52', null, '1', null, null);
-INSERT INTO `member` VALUES ('10', 'ccc', 'cccxx', '2020-10-26 00:00:00', '5', '2', '5', '45454', '1', '', '', '1', '2020-10-26 15:22:47', null, '1', null, null);
-INSERT INTO `member` VALUES ('11', 'zaaa', 'aaa', '2020-10-12 00:00:00', '6777', '2', '33333', '34343', '0', '', '', '1', '2020-10-26 15:44:25', null, '1', null, null);
+INSERT INTO `member` VALUES ('1', 'Forex01', 'fdfdxx', '2020-05-01 00:00:00', '09877636727', '2', '66666666660', '066669', '1', '1603295734.jpg', '', null, '1', '2020-10-11 13:49:03', null, null, null, null);
+INSERT INTO `member` VALUES ('2', 'Forex001', 'นิรันดร์ วังญาติ', '2020-10-22 00:00:00', '0860063601', '2', '3455555', '323232', '1', '1603346979.jpg', '', null, '1', '2020-10-21 13:49:06', null, null, null, null);
+INSERT INTO `member` VALUES ('4', 'Forex002', 'Ax2010', '1970-01-01 00:00:00', '0888898765', '2', '7789541254', '100100', '1', '', 'aHR0cHM6Ly9zLmlzYW5vb2suY29tL3RyLzAvdWQvMjgzLzE0MTkwMDkvMTQxOTAwOS0yMDIwMDExNDA5NDk0MC04YjMwMmU0LmpwZw==.jpg', null, '1', '2020-10-13 13:49:09', null, null, null, null);
+INSERT INTO `member` VALUES ('5', 'TEST02', 'TEST02', '1970-01-01 00:00:00', '+66.8600636', '2', '3434343434343', '6666', '0', '', '', null, '1', '2020-10-13 21:10:35', null, null, null, null);
+INSERT INTO `member` VALUES ('7', 'fdfd', 'santi99', '2020-12-19 00:00:00', 'fdfd', '2', 'fdfdfffdfd', '0', '0', '', '', 'SKM', '1', '2020-10-14 09:02:48', null, null, null, null);
+INSERT INTO `member` VALUES ('9', 'ZXX', 'dfdfd', '2020-10-02 00:00:00', '4555555', '2', '3233333', '323232323', '1', '', '', null, '1', '2020-10-26 09:22:52', null, '1', null, null);
+INSERT INTO `member` VALUES ('10', 'ccc', 'cccxx', '2020-10-26 00:00:00', '5', '2', '5', '45454', '1', '', '', null, '1', '2020-10-26 15:22:47', null, '1', null, null);
+INSERT INTO `member` VALUES ('11', 'zaaa', 'aaa', '2020-10-12 00:00:00', '6777', '2', '33333', '34343', '0', '', '', null, '1', '2020-10-26 15:44:25', null, '1', null, null);
+INSERT INTO `member` VALUES ('14', 'santi99', 'aaaadsd', '2020-11-24 00:00:00', '5656565', '2', '55555', '66564', '0', '', '', 'SKM', '1', '2020-11-17 20:40:33', null, '1', null, null);
 
 -- ----------------------------
 -- Table structure for `member_account`
@@ -217,7 +221,7 @@ CREATE TABLE `member_account` (
   `updated_at` int(11) DEFAULT NULL,
   `updated_by` int(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of member_account
@@ -254,6 +258,8 @@ INSERT INTO `member_account` VALUES ('43', null, '2020-11-06 16:11:56', '11', nu
 INSERT INTO `member_account` VALUES ('44', null, '2020-11-06 16:12:51', '11', null, '0', '0', '50', '-50', '0', '1', '1604653971', '1', null, null);
 INSERT INTO `member_account` VALUES ('45', null, '2020-11-06 16:18:30', '11', null, '0', '90', '0', '90', '0', '1', '1604654310', '1', null, null);
 INSERT INTO `member_account` VALUES ('46', null, '2020-11-10 21:19:52', '11', null, '0', '40', '0', '40', '0', '1', '1605017992', '1', null, null);
+INSERT INTO `member_account` VALUES ('47', null, '2020-11-21 12:57:30', '14', null, '1', '9', '0', '9', '0', '1', '1605938250', '1', null, null);
+INSERT INTO `member_account` VALUES ('48', null, '2020-11-21 12:58:34', '14', null, '0', '0', '9', '-9', '0', '1', '1605938314', '1', null, null);
 
 -- ----------------------------
 -- Table structure for `position_user`
@@ -321,7 +327,7 @@ CREATE TABLE `trans_logs` (
   `action_type` varchar(255) DEFAULT NULL,
   `trans_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of trans_logs
@@ -342,6 +348,14 @@ INSERT INTO `trans_logs` VALUES ('17', 'accounting', '1', 'aaa', 'insert', '2020
 INSERT INTO `trans_logs` VALUES ('18', 'accounting', '1', 'aaa', 'insert', '2020-11-06 16:12:51');
 INSERT INTO `trans_logs` VALUES ('19', 'accounting', '1', 'aaa', 'insert', '2020-11-06 16:18:30');
 INSERT INTO `trans_logs` VALUES ('20', 'accounting', '1', 'aaa', 'insert', '2020-11-10 21:19:52');
+INSERT INTO `trans_logs` VALUES ('21', 'member', '1', 'dfdfddf', 'insert', '2020-11-17 20:05:37');
+INSERT INTO `trans_logs` VALUES ('22', 'member', '1', '', 'delete', '2020-11-17 14:05:52');
+INSERT INTO `trans_logs` VALUES ('23', 'member', '1', '676767', 'insert', '2020-11-17 20:08:01');
+INSERT INTO `trans_logs` VALUES ('24', 'member', '1', '676767', 'update', '2020-11-17 20:08:38');
+INSERT INTO `trans_logs` VALUES ('25', 'member', '1', '', 'delete', '2020-11-17 14:09:43');
+INSERT INTO `trans_logs` VALUES ('26', 'member', '1', 'aaaadsd', 'insert', '2020-11-17 20:40:33');
+INSERT INTO `trans_logs` VALUES ('27', 'accounting', '1', 'aaaadsd', 'insert', '2020-11-21 12:57:30');
+INSERT INTO `trans_logs` VALUES ('28', 'accounting', '1', 'aaaadsd', 'insert', '2020-11-21 12:58:34');
 
 -- ----------------------------
 -- Table structure for `user`
