@@ -15,7 +15,7 @@ function transInUpdate($connect, $bank_id , $amount){
             }
         }
 
-        $new_balance = $amount + $bank_balance;
+        $new_balance = ($amount + $bank_balance);
 
         $sql2 = "UPDATE bank_account_company SET balance = '$new_balance' WHERE id ='$bank_id'";
         if ($result2 = $connect->query($sql2)) {
@@ -44,7 +44,7 @@ function transOutUpdate($connect, $bank_id , $amount){
             }
         }
 
-        $new_balance = $bank_balance - abs($amount);
+        $new_balance = ($bank_balance - abs($amount));
 
         $sql2 = "UPDATE bank_account_company SET balance = '$new_balance' WHERE id ='$bank_id'";
         if ($result2 = $connect->query($sql2)) {
@@ -90,6 +90,44 @@ function createtrans($connect , $bank_id, $activity_name, $trans_type, $amt ,$us
         }
     }
 }
+function createtransin($connect , $bank_id, $activity_name, $trans_type, $amt ,$user, $t_date, $member_id){
+    //$t_amt = 0;
+    if($bank_id >0 && $activity_name !='' && $trans_type > 0 ){
+        $t_amt = $amt;
+        if($user == null || $user ==''){
+            $user = 0;
+        }
+        //  $t_date = date('Y-m-d H:m:i');
 
+        $sql = "INSERT INTO bank_trans(trans_date,bank_id,activity,trans_type,amount,user_id,member_id) VALUES ('$t_date','$bank_id','$activity_name','$trans_type','$t_amt','$user','$member_id')";
+
+        if ($result = $connect->query($sql)) {
+            transInUpdate($connect, $bank_id, $amt);
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+}
+function createtransout($connect , $bank_id, $activity_name, $trans_type, $amt ,$user, $t_date, $member_id){
+    //$t_amt = 0;
+    if($bank_id >0 && $activity_name !='' && $trans_type > 0 ){
+        $t_amt = ($amt * -1);
+
+        if($user == null || $user ==''){
+            $user = 0;
+        }
+        //  $t_date = date('Y-m-d H:m:i');
+
+        $sql = "INSERT INTO bank_trans(trans_date,bank_id,activity,trans_type,amount,user_id,member_id) VALUES ('$t_date','$bank_id','$activity_name','$trans_type','$t_amt','$user','$member_id')";
+
+        if ($result = $connect->query($sql)) {
+            transOutUpdate($connect, $bank_id, $t_amt);
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+}
 
 ?>
