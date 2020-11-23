@@ -57,7 +57,7 @@ function getMemberidnumber($connect,$code){
     $filtered_rows = $statement->rowCount();
     if($filtered_rows > 0){
         foreach($result as $row){
-            return $row['id_number'];
+            return $row['account_id'];
         }
     }
 

@@ -60,7 +60,7 @@ function transOutUpdate($connect, $bank_id , $amount){
 }
 
 function createtrans($connect , $bank_id, $activity_name, $trans_type, $amt ,$user, $t_date, $member_id){
-    $t_amt = 0;
+    //$t_amt = 0;
     if($bank_id >0 && $activity_name !='' && $trans_type > 0 ){
          $t_amt = $amt;
          if($trans_type == 2){
